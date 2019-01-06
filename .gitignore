@@ -265,6 +265,6 @@ __pycache__/
 
 local-variables.config
 package-lock.json
-**/*.config.json
+*.config.json
 
 /vendor/
