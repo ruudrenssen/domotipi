@@ -269,3 +269,4 @@ package-lock.json
 
 /vendor/
 config.json
+config.ini
