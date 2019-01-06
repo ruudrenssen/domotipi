@@ -11,3 +11,5 @@ kodi = Kodi('http://' + ip + '/jsonrpc')
 def getMovies():
     movieList = kodi.VideoLibrary.GetMovies()
     print(movieList)
+
+getMovies()
