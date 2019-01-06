@@ -268,3 +268,4 @@ package-lock.json
 *.config.json
 
 /vendor/
+config.json
