@@ -1,15 +1,35 @@
 import configparser
-from kodijson import Kodi
+from kodijson import Kodi, PLAYER_VIDEO
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+class KodiRemote():
+    def __init__(self):
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        ip = config['KODI']['IP_ADDRESS']
+        self.kodi = Kodi('http://' + ip + '/jsonrpc')
+        self.movieList = self.kodi.VideoLibrary.GetMovies()
 
-ip = config['KODI']['IP_ADDRESS']
+    def getmovies(self):
+        print(self.movieList)
 
-kodi = Kodi('http://' + ip + '/jsonrpc')
+    def left(self):
+        print('left')
+        self.kodi.Input.Left()
 
-def getMovies():
-    movieList = kodi.VideoLibrary.GetMovies()
-    print(movieList)
+    def right(self):
+        self. kodi.Input.Right()
 
-getMovies()
+    def up(self):
+        self.kodi.Input.Up()
+
+    def down(self):
+        self.kodi.Input.Down()
+
+    def back(self):
+        self.kodi.Input.Back()
+
+    def info(self):
+        self.kodi.Input.Info()
+
+    def playpause(self):
+        self.kodi.Player.PlayPause([PLAYER_VIDEO])
