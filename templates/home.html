@@ -1,10 +1,11 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<a href="/kodi/getmovies">Get movies</a>
-<a href="/kodi/playpause">Play / Pause</a>
-<a href="/kodi/up">Up</a>
-<a href="/kodi/down">Down</a>
-<a href="/kodi/right">Right</a>
-<a href="/kodi/left">Left</a>
+<form action="/action" method="post" name="kodi-remote" id="kodi-remote">
+    <button name="action" value="toggle_play">Play / pause</button>
+    <button name="action" value="up">Up</button>
+    <button name="action" value="down">Down</button>
+    <button name="action" value="left">Left</button>
+    <button name="action" value="right">Right</button>
+</form>
 {% endblock %}

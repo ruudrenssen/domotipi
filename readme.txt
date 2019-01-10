@@ -1,3 +1,0 @@
-used packages:
-- kodijson
-- flask
