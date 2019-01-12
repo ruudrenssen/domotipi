@@ -5,12 +5,11 @@ from hue import Hue
 
 kodi = KodiRemote()
 hue = Hue()
-
 app = Flask(__name__)
 
 
 class KodiForm(Form):
-    action = StringField('action')
+    kodiaction = StringField('kodiaction')
 
 
 class HueForm(Form):
@@ -19,14 +18,19 @@ class HueForm(Form):
 
 
 @app.route('/')
-def index():
-    return render_template('room.html')
+def index(hue = hue):
+    return render_template('room.html', lights = hue.lights)
+
+@app.route('/hue', methods=['POST', 'GET'])
+def hue(hue = hue):
+    form = HueForm(request.form)
+    return redirect("/", code=302)
 
 
 @app.route('/kodi', methods=['POST', 'GET'])
-def action():
+def kodiaction():
     form = KodiForm(request.form)
-    getattr(kodi, form.action.data)()
+    getattr(kodi, form.kodiaction.data)()
     return redirect("/", code=302)
 
 

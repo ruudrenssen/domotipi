@@ -9,14 +9,14 @@ class Hue():
 
         self.bridge = Bridge(ip)
         self.bridge.connect()
-        lightgroups = self.bridge.groups
-        lights = self.bridge.lights
+        self.lightgroups = self.bridge.groups
+        self.lights = self.bridge.lights
 
-        for group in lightgroups:
+        for group in self.lightgroups:
             print(group)
 
-        for light in lights:
+        for light in self.lights:
             print (light)
 
-    def setToBright(self, light):
-        self.bridge.set_light(light.name, 'bri', 255, transitiontime = 1)
+    def transitionToBright(self, light, seconds):
+        self.bridge.set_light(light.name, 'bri', 125, transitiontime = (seconds * 10))

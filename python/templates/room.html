@@ -1,17 +1,29 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<h1>DOMOTIPI REMOTE</h1>
+<h2>Kodi</h2>
 <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote">
-    <button name="action" value="playpause">Play / pause</button>
-    <button name="action" value="up">Up</button>
-    <button name="action" value="down">Down</button>
-    <button name="action" value="left">Left</button>
-    <button name="action" value="right">Right</button>
+    <button name="kodiaction" value="playpause">Play / pause</button>
+    <button name="kodiaction" value="up">Up</button>
+    <button name="kodiaction" value="down">Down</button>
+    <button name="kodiaction" value="left">Left</button>
+    <button name="kodiaction" value="right">Right</button>
 </form>
+<h2>Hue</h2>
 <form action="/hue" method="POST" name="hue-remote" id="hue-remote">
-
+    {% for light in lights %}
+        <ul>
+            <li>
+                <label for="{{ light.light_id }}">
+                    <input type="checkbox" id="{{ light.light_id }}" {% if light.on %}checked{% endif %}>
+                    {{ light.name }}
+                </label>
+            </li>
+        </ul>
+    {% endfor %}
+    <input type="submit" value="set">
 </form>
-<h1>Domotipi Server</h1>
 <div>A lightweight webpage that acts as remote control for Phillips Hue and Kodi media center</div>
 <h2>To-do's:</h2>
 <ul>
