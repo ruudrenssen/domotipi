@@ -20,7 +20,6 @@ def index():
 def action():
     form = ActionForm(request.form)
     eval(form.action.data)()
-    print(form.action.data)
     return redirect("/", code=302)
 
 

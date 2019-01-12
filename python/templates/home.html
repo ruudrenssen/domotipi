@@ -8,4 +8,71 @@
     <button name="action" value="left">Left</button>
     <button name="action" value="right">Right</button>
 </form>
+
+<h1>Domotipi Server</h1>
+<div>A lightweight webpage that acts as remote control for Phillips Hue and Kodi media center</div>
+<h2>To-do's:</h2>
+<ul>
+    <li>
+        Flask
+        <ul>
+            <li>Create API</li>
+            <li>Setup API endpoints for Kodi</li>
+            <li>Setup API endpoints for Phillips Hue</li>
+            <li>Render views based on device information</li>
+        </ul>
+    </li>
+    <li>
+        Database
+        <ul>
+            <li>Store device data Phillips Hue in database</li>
+            <li>Store device data Kodi in database</li>
+        </ul>
+    </li>
+    <li>
+        Phillips Hue
+        <ul>
+            <li>Reset Hue bridge in order to remove all previous authentication keys</li>
+            <li>Create key for domotipi</li>
+            <li>Connect to Hue bridge</li>
+            <li>Import Hue JSON</li>
+            <li>Save local version of Hue JSON every x-minutes</li>
+            <li>Save Hue JSON locally after change</li>
+        </ul>
+    </li>
+    <li>
+        Kodi Media Center
+        <ul>
+            <li>Add controls: ffw, rw, next, previous, volume, mute, toggle info</li>
+            <li>Make controls contextual. Eg: when playing music it skips a track, when playing a television show it skips to the next episode</li>
+            <li>Add status: what is playing? when will it be ended?</li>
+        </ul>
+    </li>
+    <li>
+        Server
+        <ul>
+            <li>Setup NGINX on RaspberryPi or Nuc</li>
+            <li>Expose Flask to local network</li>
+        </ul>
+    </li>
+    <li>
+        Front-End
+        <ul>
+            <li>
+                Setup view
+                <ul>
+                    <li>Room view</li>
+                    <li>Settings view</li>
+                </ul>
+            </li>
+            <li>
+                Navigation
+                <ul>
+                    <li>Switch between rooms</li>
+                </ul>
+            </li>
+            <li>Create different grid layouts for portrait and landscape view</li>
+        </ul>
+    </li>
+</ul>
 {% endblock %}
