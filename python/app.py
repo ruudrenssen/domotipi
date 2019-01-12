@@ -1,56 +1,33 @@
 from flask import Flask, render_template, request, redirect
-from kodi import KodiRemote
 from wtforms import Form, StringField
+from kodi import KodiRemote
+from hue import Hue
 
 kodi = KodiRemote()
+hue = Hue()
 
 app = Flask(__name__)
 
 
-class ActionForm(Form):
+class KodiForm(Form):
+    action = StringField('action')
+
+
+class HueForm(Form):
+    lightid = StringField('light')
     action = StringField('action')
 
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+    return render_template('room.html')
 
 
-@app.route('/action', methods=['POST', 'GET'])
+@app.route('/kodi', methods=['POST', 'GET'])
 def action():
-    form = ActionForm(request.form)
-    eval(form.action.data)()
+    form = KodiForm(request.form)
+    getattr(kodi, form.action.data)()
     return redirect("/", code=302)
-
-
-def toggle_play():
-    kodi.playpause()
-    return render_template('home.html')
-
-
-def left():
-    kodi.left()
-    return render_template('home.html')
-
-
-def right():
-    kodi.right()
-    return render_template('home.html')
-
-
-def up():
-    kodi.up()
-    return render_template('home.html')
-
-
-def down():
-    kodi.down()
-    return render_template('home.html')
-
-
-def getmovies():
-    kodi.getmovies()
-    return render_template('home.html')
 
 
 if __name__ == '__main__':

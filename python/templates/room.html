@@ -1,14 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<form action="/action" method="post" name="kodi-remote" id="kodi-remote">
-    <button name="action" value="toggle_play">Play / pause</button>
+<form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote">
+    <button name="action" value="playpause">Play / pause</button>
     <button name="action" value="up">Up</button>
     <button name="action" value="down">Down</button>
     <button name="action" value="left">Left</button>
     <button name="action" value="right">Right</button>
 </form>
+<form action="/hue" method="POST" name="hue-remote" id="hue-remote">
 
+</form>
 <h1>Domotipi Server</h1>
 <div>A lightweight webpage that acts as remote control for Phillips Hue and Kodi media center</div>
 <h2>To-do's:</h2>
@@ -43,7 +45,7 @@
     <li>
         Kodi Media Center
         <ul>
-            <li>Add controls: ffw, rw, next, previous, volume, mute, toggle info</li>
+            <li>Add controls: stop, ffw, rw, next, previous, volume, mute, toggle info, ok/enter</li>
             <li>Make controls contextual. Eg: when playing music it skips a track, when playing a television show it skips to the next episode</li>
             <li>Add status: what is playing? when will it be ended?</li>
         </ul>
