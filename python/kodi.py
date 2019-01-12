@@ -13,7 +13,6 @@ class KodiRemote():
         print(self.movieList)
 
     def left(self):
-        print('left')
         self.kodi.Input.Left()
 
     def right(self):
