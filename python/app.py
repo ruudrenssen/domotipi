@@ -68,22 +68,6 @@ def index():
                           'reachable']
             light_info_fields.append(create_fields(light, light_field, properties))
 
-        # light_id_value = getattr(light, 'light_id', None)
-        # name_value = getattr(light, 'name', None)
-        # on_value = getattr(light, 'on', None)
-        # brightness_value = getattr(light, 'brightness', None)
-        # colormode_value = getattr(light, 'colormode', None)
-        # hue_value = getattr(light, 'heu', None)
-        # xy_value = getattr(light, 'xy', None)
-        # colortemp_value = getattr(light, 'colortemp', None)
-        # effect_value = getattr(light, 'effect', None)
-        # alert_value = getattr(light, 'alert', None)
-        # reachable_value = getattr(light, 'reachable', None)
-
-        # light_field = {'light_id': light.light_id, 'name': light.name, 'brightness': light.brightness}
-        # light_field[attribute] = light[attribute]
-
-        # light_info_fields.append(light_field)
     form = HueForm(hue_action=light_info_fields)
     return render_template('room.html', form=form.hue_action)
 
@@ -91,6 +75,7 @@ def index():
 def create_fields(light_obj, field_obj, properties):
     for light_property in properties:
         field_obj[light_property] = getattr(light_obj, light_property)
+    print(field_obj)
     return field_obj
 
 
