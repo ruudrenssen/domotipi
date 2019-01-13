@@ -12,9 +12,13 @@
     <button name="kodi_action" value="right">Right</button>
 </form>
 <h2>Hue</h2>
-<form action="/hue" method="POST" name="hue_lights" id="hue_lights">
+<form action="/hue" method="POST" name="hue_lights" id="hue-remote">
     {% for light in form %}
-        {{ light }}
+        {{ light.data}}
+
+        <div>
+            <label>Name: <input type="text" id="hue-action-{{ light.data.light_id }}-id" value="{{ light.data.name }}" /></label>
+        </div>
     {% endfor %}
     <input type="submit" value="set">
 </form>
