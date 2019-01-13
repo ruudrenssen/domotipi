@@ -8,16 +8,14 @@ class Hue():
         ip = config['HUE']['IP_ADDRESS']
 
         self.bridge = Bridge(ip)
-        self.bridge.connect()
-        self.lightgroups = self.bridge.groups
+        self.light_groups = self.bridge.groups
         self.lights = self.bridge.lights
-        self.bridge.connect()
 
-        for group in self.lightgroups:
-            print(group)
-
-        for light in self.lights:
-            print (light)
+        # for group in self.lightgroups:
+        #     print(group)
+        #
+        # for light in self.lights:
+        #     print (light)
 
     def transitionToBright(self, light, seconds):
         self.bridge.set_light(light.name, 'bri', 125, transitiontime = (seconds * 10))

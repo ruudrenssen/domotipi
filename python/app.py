@@ -1,32 +1,40 @@
 from flask import Flask, render_template, request, redirect
 from wtforms import Form, FormField, FieldList, StringField
 from kodi import KodiRemote
-from lights import Hue
-
+from hue import Hue
 
 kodi = KodiRemote()
-lights = Hue()
+hue = Hue()
 app = Flask(__name__)
 
 
 class KodiForm(Form):
-    kodi_action = StringField('kodiaction')
+    kodi_action = StringField()
+
+
+class LightForm(Form):
+    name = StringField()
 
 
 class HueForm(Form):
-    lights = FieldList(FormField(StringField), min_entries = 0)
+    hue_action = FieldList(FormField(LightForm), min_entries=0)
 
 
 @app.route('/')
-def index(hue = lights):
-    return render_template('room.html', lights = hue.lights)
+def index(hue_data=hue):
+    light_fields = []
+    for light in hue.lights:
+        light_field = {'name': light.name}
+        light_fields.append(light_field)
+    form = HueForm(hue_action=light_fields)
+    print(form.hue_action.data)
+    return render_template('room.html', form=form.hue_action)
 
 
 @app.route('/hue', methods=['POST', 'GET'])
-def hue(hue = lights):
+def hue_action():
     form = HueForm(request.form)
-    for light in hue.lights:
-        print(getattr(form, 'light' + str(light.light_id)))
+    print(form.hue_action.data)
     return redirect("/", code=302)
 
 
