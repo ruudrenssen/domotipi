@@ -11,12 +11,12 @@
     <button name="kodiaction" value="right">Right</button>
 </form>
 <h2>Hue</h2>
-<form action="/hue" method="POST" name="hue-remote" id="hue-remote">
+<form action="/hue" method="POST" name="lights" id="hue-remote">
     {% for light in lights %}
         <ul>
             <li>
                 <label for="{{ light.light_id }}">
-                    <input type="checkbox" id="{{ light.light_id }}" {% if light.on %}checked{% endif %}>
+                    <input type="checkbox" name="light{{ light.light_id }}" id="light{{ light.light_id }}" {% if light.on %}checked{% endif %}>
                     {{ light.name }}
                 </label>
             </li>

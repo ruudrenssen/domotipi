@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from wtforms import Form, StringField
+from wtforms import Form, FormField, FieldList, StringField
 from kodi import KodiRemote
 from hue import Hue
 
@@ -13,8 +13,7 @@ class KodiForm(Form):
 
 
 class HueForm(Form):
-    lightid = StringField('light')
-    action = StringField('action')
+    lights = FieldList(FormField(StringField), min_entries = 0)
 
 
 @app.route('/')
@@ -24,6 +23,8 @@ def index(hue = hue):
 @app.route('/hue', methods=['POST', 'GET'])
 def hue(hue = hue):
     form = HueForm(request.form)
+    for light in hue.lights:
+        print(getattr(form, 'light' + str(light.light_id)))
     return redirect("/", code=302)
 
 
