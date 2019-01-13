@@ -11,6 +11,7 @@ class Hue():
         self.bridge.connect()
         self.lightgroups = self.bridge.groups
         self.lights = self.bridge.lights
+        self.bridge.connect()
 
         for group in self.lightgroups:
             print(group)
