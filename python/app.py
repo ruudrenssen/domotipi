@@ -23,7 +23,7 @@ class LightForm(Form):
     xy = StringField()
     colortemp = StringField()
     effect = StringField()
-    alert = BooleanField()
+    alert = StringField()
     reachable = StringField()
 
 
@@ -90,16 +90,13 @@ def create_fields(light_obj, field_obj, properties):
 
 @app.route('/hue/<light_id>', methods=['POST', 'GET'])
 def hue_light_info(light_id):
-    form = HueForm(request.form)
-    print(form.hue_light_info.data)
-    print(light_id)
+    print(request.form['name'])
     return redirect("/", code=302)
 
 
 @app.route('/kodi', methods=['POST', 'GET'])
 def kodi_action():
     form = KodiForm(request.form)
-    print(form.data)
     getattr(kodi, form.kodi_action.data)()
     return redirect("/", code=302)
 

@@ -14,25 +14,34 @@
 <h2>Hue</h2>
 <div style="display: flex; flex-wrap: wrap; margin: -.25rem;">
     {% for hue_light_info in form %}
-    <form action='/hue/{{ hue_light_info.data.light_id }}' method="POST" name="hue_light_info" id="hue-remote">
+     <form action='/hue/{{ hue_light_info.data.light_id }}' method="POST" name="hue_light_info" id="hue-remote">
         <div style="border: 2px solid black; margin: .25rem; padding: .5rem;">
-            <div><label>Name: <input type="text" name="light_{{ hue_light_info.data.light_id }}_name" value="{{ hue_light_info.data.name }}" /></label></div>
+            <div><label>Name: <input type="text" name="name" value="{{ hue_light_info.data.name }}" /></label></div>
             <div>Id: {{ hue_light_info.data.light_id}}</div>
-            <div><label>On:<input type="checkbox" id="light_{{ hue_light_info.data.light_id }}"{% if hue_light_info.data.on %}checked{% endif%} /></label></div>
-            {% if hue_light_info.data.brightness %}<div><label>Brightness:<input type="range" min="0" max="255" value="{{ hue_light_info.data.brightness }}"/></label></div>{% endif %}
-            {% if hue_light_info.data.saturation %}<div><label>Saturation:<input type="range" min="0" max="255" value="{{ hue_light_info.data.saturation }}"/></label></div>{% endif %}
-            {% if hue_light_info.data.hue %}<div><label>Hue:<input type="range" min="0" max="65535 " value="{{ hue_light_info.data.hue }}"/></label></div>{% endif %}
-            {% if hue_light_info.data.xy %}<div>xy: {{ hue_light_info.data.xy }}</div>{% endif %}
-            {% if hue_light_info.data.colortemp %}<div>colortemp: {{ hue_light_info.data.colortemp }}</div>{% endif %}
-            {% if hue_light_info.data.effect %}<div>effect: {{ hue_light_info.data.effect }}</div>{% endif %}
-            {% if hue_light_info.data.alert %}<div>alert: {{ hue_light_info.data.alert }}</div>{% endif %}
-            {% if hue_light_info.data.reachable %}<div>reachable: {{ hue_light_info.data.reachable }}</div>{% endif %}
+            <div><label>On:<input name="on" type="checkbox" id="light_{{ hue_light_info.data.light_id }}"{% if hue_light_info.data.on %}checked{% endif%} /></label></div>
+            {% if hue_light_info.data.brightness %}<div><label>Brightness:<input name="brightness" type="range" min="0" max="255" value="{{ hue_light_info.data.brightness }}"/></label></div>{% endif %}
+            {% if hue_light_info.data.saturation %}<div><label>Saturation:<input name="saturation" type="range" min="0" max="255" value="{{ hue_light_info.data.saturation }}"/></label></div>{% endif %}
+            {% if hue_light_info.data.hue %}<div><label>Hue:<input name="hue" type="range" min="0" max="65535 " value="{{ hue_light_info.data.hue }}"/></label></div>{% endif %}
+            {% if hue_light_info.data.xy %}<div><label>xy: <input name="xy" type="text" value="{{ hue_light_info.data.xy }}" /></label></div>{% endif %}
+            {% if hue_light_info.data.colortemp %}<div><label>colortemp: <input name="colortemp" value="{{ hue_light_info.data.colortemp }}" /></label></div>{% endif %}
+            {% if hue_light_info.data.effect %}<div><label>colorloop: <input type="checkbox" name="effect" {% if hue_light_info.data.effect %} checked {% endif %} /></label></div>{% endif %}
+            {% if hue_light_info.data.alert %}
+            <label>
+                alert:
+                <select name="alert">
+                    <option value="none" {% if not hue_light_info.data.alert%} selected {% endif %}>none</option>
+                    <option value="select" {% if hue_light_info.data.alert == 'select' %} selected {% endif %}>select</option>
+                    <option value="lselect" {% if hue_light_info.data.alert == 'lselect' %} selected {% endif %}>lselect</option>
+                </select>
+            </label>
+            {% endif %}
+            {% if hue_light_info.data.reachable %}<div><label>reachable:<input type="checkbox" {% if hue_light_info.data.reachable %} checked {% endif %}></label></div>{% endif %}
             <span>Type: {{ hue_light_info.data.type}}</span>
             <input type="submit" value="set">
         </div>
     </form>
     {% endfor %}
-    </div>
+</div>
 <h2>To-do's:</h2>
 <ul>
     <li>
