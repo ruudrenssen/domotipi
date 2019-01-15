@@ -14,7 +14,7 @@
 <h2>Hue</h2>
 <div style="display: flex; flex-wrap: wrap; margin: -.25rem;">
     {% for hue_light_info in form %}
-    <form action='/hue/{{ hue_light_info.light_id }}' method="POST" name="hue_light_info" id="hue-remote">
+    <form action='/hue/{{ hue_light_info.data.light_id }}' method="POST" name="hue_light_info" id="hue-remote">
         <div style="border: 2px solid black; margin: .25rem; padding: .5rem;">
             <div><label>Name: <input type="text" name="light_{{ hue_light_info.data.light_id }}_name" value="{{ hue_light_info.data.name }}" /></label></div>
             <div>Id: {{ hue_light_info.data.light_id}}</div>
