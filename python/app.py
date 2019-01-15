@@ -13,7 +13,7 @@ class KodiForm(Form):
 
 
 class LightForm(Form):
-    light_id = HiddenField()
+    light_id = StringField()
     name = StringField()
     type = StringField()
     on = BooleanField()
@@ -83,15 +83,22 @@ def index():
 
 def create_fields(light_obj, field_obj, properties):
     for light_property in properties:
-        # print(light_property + ': ' + str(getattr(light_obj, light_property)))
         field_obj[light_property] = getattr(light_obj, light_property)
     return field_obj
 
 
-@app.route('/hue/<light_id>', methods=['POST', 'GET'])
-def hue_light_info(light_id):
-    print(request.form['name'])
+@app.route('/hue', methods=['POST', 'GET'])
+def hue_light_info():
+    form = request.form.copy()
+    light_id = int(form.pop('light_id').strip('light_'))
+    print(light_id)
+
+    for field in form:
+        print(field + ': ' + form[field])
+        # for light in hue.lights:
+        #     setattr(light, field, form[field])
     return redirect("/", code=302)
+
 
 
 @app.route('/kodi', methods=['POST', 'GET'])
