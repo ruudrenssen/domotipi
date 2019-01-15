@@ -15,14 +15,20 @@ class KodiForm(Form):
 class LightForm(Form):
     light_id = HiddenField()
     name = StringField()
+    type = StringField()
     on = BooleanField()
     brightness = IntegerField()
     saturation = IntegerField()
     hue = IntegerField()
+    xy = StringField()
+    colortemp = StringField()
+    effect = StringField()
+    alert = BooleanField()
+    reachable = StringField()
 
 
 class HueForm(Form):
-    hue_action = FieldList(FormField(LightForm), min_entries=0)
+    hue_light_info = FieldList(FormField(LightForm), min_entries=0)
 
 
 @app.route('/')
@@ -37,6 +43,7 @@ def index():
         if type_value == 'Extended color light':
             properties = ['light_id',
                           'name',
+                          'type',
                           'on',
                           'brightness',
                           'colormode',
@@ -51,6 +58,7 @@ def index():
         if type_value == 'Color temperature light':
             properties = ['light_id',
                           'name',
+                          'type',
                           'on',
                           'brightness',
                           'colormode',
@@ -62,31 +70,36 @@ def index():
         if type_value == 'Dimmable light':
             properties = ['light_id',
                           'name',
+                          'type',
                           'on',
                           'brightness',
                           'alert',
                           'reachable']
             light_info_fields.append(create_fields(light, light_field, properties))
 
-    form = HueForm(hue_action=light_info_fields)
-    return render_template('room.html', form=form.hue_action)
+    form = HueForm(hue_light_info=light_info_fields)
+    return render_template('room.html', form=form.hue_light_info)
 
 
 def create_fields(light_obj, field_obj, properties):
     for light_property in properties:
+        # print(light_property + ': ' + str(getattr(light_obj, light_property)))
         field_obj[light_property] = getattr(light_obj, light_property)
-    print(field_obj)
     return field_obj
 
 
-@app.route('/hue', methods=['POST', 'GET'])
-def hue_action():
+@app.route('/hue/<light_id>', methods=['POST', 'GET'])
+def hue_light_info(light_id):
+    form = HueForm(request.form)
+    print(form.hue_light_info.data)
+    print(light_id)
     return redirect("/", code=302)
 
 
 @app.route('/kodi', methods=['POST', 'GET'])
 def kodi_action():
     form = KodiForm(request.form)
+    print(form.data)
     getattr(kodi, form.kodi_action.data)()
     return redirect("/", code=302)
 
