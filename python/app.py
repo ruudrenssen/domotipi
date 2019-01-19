@@ -22,6 +22,7 @@ class LightForm(Form):
     hue = IntegerField()
     xy = StringField()
     colortemp = IntegerField()
+    colormode = StringField()
     effect = StringField()
     alert = StringField()
     reachable = StringField()
@@ -90,7 +91,7 @@ def hue_light_info():
     print(form)
     light_id = int(form.pop('light_id').strip('light_'))
     form['on'] = bool(form['on'])
-    if hasattr(form, 'colortemp'):
+    if 'colortemp' in form:
         form['colortemp'] = int(form['colortemp'])
     for field in form:
         print(field + ': ' + str(getattr(hue.lights[light_id-1], field)))

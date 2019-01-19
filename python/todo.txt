@@ -1,0 +1,38 @@
+To-do's:
+Code:
+    - improve performance form
+        - create seperate form for each type (less if statements and better handling when setting propertie on bridge)
+        - create classes for light on order to process them
+        - process light properties with set_light
+
+Flask
+    Create API
+    Setup API endpoints for Kodi
+    Setup API endpoints for Phillips Hue
+    Render views based on device information
+Database
+    Store rooms in database
+    Store device data Phillips Hue in database
+    Store device data Kodi in database
+Phillips Hue
+    Reset Hue bridge in order to remove all previous authentication keys
+    Create key for domotipi
+    Connect to Hue bridge
+    Import Hue JSON
+    Save local version of Hue JSON every x-minutes
+    Save Hue JSON locally after change
+Kodi Media Center
+    Add controls: stop, ffw, rw, next, previous, volume, mute, toggle info, ok/enter
+    Make controls contextual. Eg: when playing music it skips a track, when playing a television show it skips to the next episode
+    Add status: what is playing? when will it be ended?
+Server
+    Setup NGINX on RaspberryPi or Nuc
+    Expose Flask to local network
+Front-End
+    Setup view
+    Room view
+    Settings view
+    All lights and players view
+Navigation
+    Switch between rooms
+    Create different grid layouts for portrait and landscape view

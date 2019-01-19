@@ -15,5 +15,25 @@ class Hue():
         self.bridge.set_light(light.name, 'bri', 125, transitiontime = (seconds * 10))
 
 
+class Light():
+    def __init__(self):
+        self._light_id
+        self._name
+        self._on
+        self._reachable
+        self._type
 
+class DimmableLight(Light):
+    def __init__(self):
+        self._brightness
+        self._alert
 
+class TemperatureLight(DimmableLight):
+    def __init__(self):
+        self._colortemparture
+
+class ExtendedLight(TemperatureLight):
+    def __init__(self):
+        self._xy
+        self._hue
+        self._saturation
