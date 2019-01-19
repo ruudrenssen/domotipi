@@ -21,7 +21,7 @@ class LightForm(Form):
     saturation = IntegerField()
     hue = IntegerField()
     xy = StringField()
-    colortemp = StringField()
+    colortemp = IntegerField()
     effect = StringField()
     alert = StringField()
     reachable = StringField()
@@ -46,13 +46,13 @@ def index():
                           'type',
                           'on',
                           'brightness',
+                          'saturation',
                           'colormode',
                           'hue',
                           'xy',
                           'colortemp',
                           'effect',
-                          'alert',
-                          'reachable']
+                          'alert']
             light_info_fields.append(create_fields(light, light_field, properties))
 
         if type_value == 'Color temperature light':
@@ -61,10 +61,8 @@ def index():
                           'type',
                           'on',
                           'brightness',
-                          'colormode',
                           'colortemp',
-                          'alert',
-                          'reachable']
+                          'alert']
             light_info_fields.append(create_fields(light, light_field, properties))
 
         if type_value == 'Dimmable light':
@@ -73,12 +71,11 @@ def index():
                           'type',
                           'on',
                           'brightness',
-                          'alert',
-                          'reachable']
+                          'alert']
             light_info_fields.append(create_fields(light, light_field, properties))
 
     form = HueForm(hue_light_info=light_info_fields)
-    return render_template('room.html', form=form.hue_light_info)
+    return render_template('all.html', form=form.hue_light_info)
 
 
 def create_fields(light_obj, field_obj, properties):
@@ -90,15 +87,16 @@ def create_fields(light_obj, field_obj, properties):
 @app.route('/hue', methods=['POST', 'GET'])
 def hue_light_info():
     form = request.form.copy()
+    print(form)
     light_id = int(form.pop('light_id').strip('light_'))
-    print(light_id)
-
+    form['on'] = bool(form['on'])
+    if hasattr(form, 'colortemp'):
+        form['colortemp'] = int(form['colortemp'])
     for field in form:
-        print(field + ': ' + form[field])
-        # for light in hue.lights:
-        #     setattr(light, field, form[field])
+        print(field + ': ' + str(getattr(hue.lights[light_id-1], field)))
+        print(form[field])
+        setattr(hue.lights[light_id-1], str(field), form[field])
     return redirect("/", code=302)
-
 
 
 @app.route('/kodi', methods=['POST', 'GET'])
