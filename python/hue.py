@@ -31,6 +31,7 @@ class DimmableLight(Light):
 class TemperatureLight(DimmableLight):
     def __init__(self):
         self._colortemparture
+        self._colormode
 
 class ExtendedLight(TemperatureLight):
     def __init__(self):

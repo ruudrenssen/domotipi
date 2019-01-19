@@ -17,15 +17,20 @@ class LightForm(Form):
     name = StringField()
     type = StringField()
     on = BooleanField()
-    brightness = IntegerField()
+    colortemp = IntegerField()
     saturation = IntegerField()
     hue = IntegerField()
     xy = StringField()
-    colortemp = IntegerField()
     colormode = StringField()
     effect = StringField()
     alert = StringField()
     reachable = StringField()
+    brightness = IntegerField()
+    colormode = StringField()
+#
+# class DimmableLightForm(Form):
+#
+# class ExtendedLightForm(Form):
 
 
 class HueForm(Form):
@@ -63,6 +68,7 @@ def index():
                           'on',
                           'brightness',
                           'colortemp',
+                          'colormode',
                           'alert']
             light_info_fields.append(create_fields(light, light_field, properties))
 
