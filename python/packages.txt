@@ -2,4 +2,4 @@
 - flask
 - wtforms
 - phue
-- flask-mysqldb
+- mysql
