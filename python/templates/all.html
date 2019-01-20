@@ -14,29 +14,28 @@
 </form>
 
 <h2>Hue</h2>
+<div class="lights">
+    {% for light in lights %}
+    <div class="light">
+        {% include 'partials/light-form.html' %}
 
-{% for light in lights %}
-    {% include 'partials/light-form.html' %}
-
-    {% if light.type == 'Dimmable light' %}
-        {% include 'partials/dimm-light-form.html' %}
-    {% endif %}
-
-    {% if light.type == 'Color temperature light' %}
-        {% include 'partials/dimm-light-form.html' %}
-        {% include 'partials/color-temp-form.html' %}
-    {% endif %}
-
-    {% if light.type == 'Extended color light' %}
-        {% include 'partials/dimm-light-form.html' %}
-        {% if light.colormode == 'xy' %}
-            {% include 'partials/xy-form.html' %}
-        {% elif light.colormode == 'ct' %}
+        {% if light.type == 'Dimmable light' %}
+            {% include 'partials/dimm-light-form.html' %}
+        {% elif light.type == 'Color temperature light' %}
+            {% include 'partials/dimm-light-form.html' %}
             {% include 'partials/color-temp-form.html' %}
-        {% elif light.colormode == 'hs' %}
-            {% include 'partials/hue-form.html' %}
+        {% elif light.type == 'Extended color light' %}
+            {% include 'partials/dimm-light-form.html' %}
+            {% include 'partials/color-mode-form.html' %}
+            {% if light.colormode == 'xy' %}
+                {% include 'partials/xy-form.html' %}
+            {% elif light.colormode == 'ct' %}
+                {% include 'partials/color-temp-form.html' %}
+            {% elif light.colormode == 'hs' %}
+                {% include 'partials/hue-form.html' %}
+            {% endif %}
         {% endif %}
-    {% endif %}
-{% endfor %}
-
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

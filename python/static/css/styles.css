@@ -1,3 +1,40 @@
+:root {
+    --gutter: 1rem;
+    --small-gutter: 0.5rem;
+    --foreground: #EFEFEF;
+    --background: #212121;
+    --muted: #565656;
+    --border-width: 2px;
+
+    --border: var(--border-width) solid var(--muted);
+}
+
 html, body {
-    background: red;
+    margin: 0;
+    padding: var(--gutter);
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--foreground);
+
+    background-color: var(--background);
+}
+
+input, button {
+    padding: var(--small-gutter);
+    background-color: transparent;
+    border: var(--border);
+    color: var(--foreground);
+}
+
+.lights {
+    display: grid;
+    grid-gap: var(--gutter);
+
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.light {
+    padding: var(--gutter);
+
+    border: var(--border);
 }

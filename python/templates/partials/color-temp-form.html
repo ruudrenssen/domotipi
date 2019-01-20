@@ -2,7 +2,7 @@
     <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
     <label>
         Colortemp:
-        <input name="colortemp" type="range" min="154" max="500"/>
+        <input name="colortemp" type="range" min="154" max="500" value="{{ light.colortemp }}"/>
     </label>
     <input type="submit" value="✔">
 </form>
