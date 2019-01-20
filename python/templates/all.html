@@ -17,22 +17,22 @@
 <div class="lights">
     {% for light in lights %}
     <div class="light">
-        {% include 'partials/light-form.html' %}
+        {% include 'partials/light-form.jinja' %}
 
         {% if light.type == 'Dimmable light' %}
-            {% include 'partials/dimm-light-form.html' %}
+            {% include 'partials/dimm-light-form.jinja' %}
         {% elif light.type == 'Color temperature light' %}
-            {% include 'partials/dimm-light-form.html' %}
-            {% include 'partials/color-temp-form.html' %}
+            {% include 'partials/dimm-light-form.jinja' %}
+            {% include 'partials/color-temp-form.jinja' %}
         {% elif light.type == 'Extended color light' %}
-            {% include 'partials/dimm-light-form.html' %}
-            {% include 'partials/color-mode-form.html' %}
+            {% include 'partials/dimm-light-form.jinja' %}
+            {% include 'partials/color-mode-form.jinja' %}
             {% if light.colormode == 'xy' %}
-                {% include 'partials/xy-form.html' %}
+                {% include 'partials/xy-form.jinja' %}
             {% elif light.colormode == 'ct' %}
-                {% include 'partials/color-temp-form.html' %}
+                {% include 'partials/color-temp-form.jinja' %}
             {% elif light.colormode == 'hs' %}
-                {% include 'partials/hue-form.html' %}
+                {% include 'partials/hue-form.jinja' %}
             {% endif %}
         {% endif %}
     </div>

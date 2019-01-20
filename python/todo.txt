@@ -15,6 +15,7 @@ Database
     Store device data Phillips Hue in database
     Store device data Kodi in database
 Phillips Hue
+    Renaming gaat mis
     Reset Hue bridge in order to remove all previous authentication keys
     Create key for domotipi
     Connect to Hue bridge
