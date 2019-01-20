@@ -1,8 +1,10 @@
-<form action='/hue' method="POST" name="color_temp" id="color_temp-light_{{ light.light_id }}">
-    <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
-    <label>
-        Colortemp:
-        <input name="colortemp" type="range" min="154" max="500" value="{{ light.colortemp }}"/>
-    </label>
-    <input type="submit" value="✔">
+<form action='/hue' class="light-cell" method="POST" name="color_temp" id="color_temp-light_{{ light.light_id }}">
+    <div class="cell-rule">
+        <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
+        <label>
+            Colortemp:
+            <input name="colortemp" type="range" min="154" max="500" step="1" value="{{ light.colortemp }}"/>
+        </label>
+        <input type="submit" value="✔">
+    </div>
 </form>

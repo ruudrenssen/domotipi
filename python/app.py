@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect
 from kodi import KodiRemote
 from hue import Hue
+from database import Database
 
+app = Flask(__name__)
+db = Database(app)
 kodi = KodiRemote()
 hue = Hue()
-app = Flask(__name__)
 
 
 @app.route('/')

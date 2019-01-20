@@ -34,11 +34,21 @@ label {
     display: grid;
     grid-gap: var(--gutter);
 
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .light {
+    display: grid;
+    grid-template-rows: min-content min-content min-content 1fr;
+
     padding: var(--gutter);
 
     border: var(--border);
+}
+
+.cell-rule {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
 }

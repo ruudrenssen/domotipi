@@ -1,6 +1,8 @@
-<form action='/hue' method="POST" name="colormode" id="colormode_{{ light.light_id }}">
+<form action='/hue' class="light-cell" method="POST" name="colormode" id="colormode_{{ light.light_id }}">
     <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
-    <button value="xy" name="colormode">xy</button>
-    <button value="hs" name="colormode">hs</button>
-    <button value="ct" name="colormode">ct</button>
+    <div class="cell-rule">
+        <button value="xy" name="colormode">xy</button>
+        <button value="hs" name="colormode">hs</button>
+        <button value="ct" name="colormode">ct</button>
+    </div>
 </form>

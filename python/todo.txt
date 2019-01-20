@@ -22,6 +22,7 @@ Phillips Hue
     Import Hue JSON
     Save local version of Hue JSON every x-minutes
     Save Hue JSON locally after change
+    Connect button
 Kodi Media Center
     Add controls: stop, ffw, rw, next, previous, volume, mute, toggle info, ok/enter
     Make controls contextual. Eg: when playing music it skips a track, when playing a television show it skips to the next episode

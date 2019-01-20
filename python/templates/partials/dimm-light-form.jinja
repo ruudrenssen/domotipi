@@ -1,8 +1,10 @@
-<form action='/hue' method="POST" name="dimm_light" id="dimm-light_{{ light.light_id }}">
-    <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
-    <label>
-        Brightness:
-        <input name="brightness" type="range" min="1" max="254" value="{{ light.brightness}}" />
-    </label>
-    <input type="submit" value="✔">
+<form action='/hue' class="light-cell" method="POST" name="dimm_light" id="dimm-light_{{ light.light_id }}">
+    <div class="cell-rule">
+        <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
+        <label for="brightness-light_{{ light.light_id }}">
+            Brightness:
+        </label>
+        <input id="brightness-light_{{ light.light_id }}" name="brightness" type="range" min="1" max="254" step="1" value="{{ light.brightness}}" />
+        <input type="submit" value="✔">
+    </div>
 </form>
