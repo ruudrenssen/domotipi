@@ -4,9 +4,14 @@ from hue import Hue
 from database import Database
 
 app = Flask(__name__)
-db = Database(app)
+db = Database()
 kodi = KodiRemote()
 hue = Hue()
+
+
+def callback(sender, earg):
+    print(sender)
+    print(earg)
 
 
 @app.route('/')
@@ -29,4 +34,6 @@ def kodi_action():
 
 
 if __name__ == '__main__':
+    db.event += callback
+    db.open()
     app.run(debug=True)
