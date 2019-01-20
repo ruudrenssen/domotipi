@@ -1,0 +1,13 @@
+<form action='/hue' method="POST" name="hue_saturation" id="hue_saturation-light_{{ light.light_id }}">
+    <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
+    <input type="text" hidden value="hue" name="action" />
+    <label>
+        Saturation:
+        <input name="saturation" type="range" min="154" max="500"/>
+    </label>
+    <label>
+        Hue:
+        <input name="hue" type="range" min="154" max="500"/>
+    </label>
+    <input type="submit" value="✔">
+</form>

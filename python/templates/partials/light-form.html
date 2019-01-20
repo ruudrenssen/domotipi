@@ -1,0 +1,18 @@
+<form action='/hue' method="POST" name="light" id="light_{{ light.light_id }}">
+    <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
+    <input type="text" hidden value="basic" name="action" />
+    <div>Id: {{ light.light_id}}</div>
+    <label>
+        Name:
+        <input name="name" type="text" value="{{ light.name }}" />
+    </label>
+    <label>
+        On:
+        <input type="radio" name="on" value="True" {% if light.on %} checked {% endif %}>
+    </label>
+    <label>
+        Off:
+        <input type="radio" name="on" value="False" {% if not light.on %} checked {% endif %}>
+    </label>
+    <input type="submit" value="✔">
+</form>

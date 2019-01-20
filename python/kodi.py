@@ -1,6 +1,7 @@
 import configparser
 from kodijson import Kodi, PLAYER_VIDEO
 
+
 class KodiRemote():
     def __init__(self):
         config = configparser.ConfigParser()
@@ -9,7 +10,7 @@ class KodiRemote():
         self.kodi = Kodi('http://' + ip + '/jsonrpc')
         self.movieList = self.kodi.VideoLibrary.GetMovies()
 
-    def getmovies(self):
+    def get_movies(self):
         print(self.movieList)
 
     def left(self):

@@ -4,6 +4,7 @@
 <h1>DOMOTIPI REMOTE</h1>
 <p>A lightweight web page that acts as remote control for Phillips Hue and Kodi media center.</p>
 <h2>Kodi</h2>
+
 <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote">
     <button name="kodi_action" value="playpause">Play / pause</button>
     <button name="kodi_action" value="up">Up</button>
@@ -11,35 +12,31 @@
     <button name="kodi_action" value="left">Left</button>
     <button name="kodi_action" value="right">Right</button>
 </form>
+
 <h2>Hue</h2>
-<div style="display: flex; flex-wrap: wrap; margin: -.25rem;">
-    {% for light in form %}
-    <form action='/hue' method="POST" name="light" id="light_{{ light.data.light_id }}">
-        <div style="border: 2px solid black; margin: .25rem; padding: .5rem;">
-            <input type="text" hidden value="light_{{ light.data.light_id }}" name="light_id" />
-            <div><label>Name: <input type="text" name="name" value="{{ light.data.name }}" /></label></div>
-            <div>Id: {{ light.data.light_id}}</div>
-            <div><label>On:<input name="on" type="text" id="on" value="{{ light.data.on }}" /></label></div>
-            {% if light.data.brightness %}<div><label>Brightness:<input name="brightness" type="range" min="0" max="255" value="{{ light.data.brightness }}"/></label></div>{% endif %}
-            {% if light.data.saturation %}<div><label>Saturation:<input name="saturation" type="range" min="0" max="255" value="{{ light.data.saturation }}"/></label></div>{% endif %}
-            {% if light.data.hue %}<div><label>Hue:<input name="hue" type="range" min="0" max="65535 " value="{{ light.data.hue }}"/></label></div>{% endif %}
-            {% if light.data.xy %}<div><label>xy: <input name="xy" type="text" value="{{ light.data.xy }}" /></label></div>{% endif %}
-            {% if light.data.colormode %}<div>colormode: {{ light.data.colormode }}</div>{% endif %}
-            {% if light.data.colortemp %}<div><label>colortemp: <input type="range" min="154" max="500" step="1" name="colortemp" value="{{ light.data.colortemp }}" /></label></div>{% endif %}
-            {% if light.data.effect %}<div><label>effect: <input name="effect" value="{{ light.data.effect }}" /></label></div>{% endif %}
-            <label>
-                alert:
-                <select name="alert">
-                    <option value="none" {% if not light.data.alert %} selected {% endif %}>none</option>
-                    <option value="select" {% if light.data.alert=='select' %} selected {% endif %}>select</option>
-                    <option value="lselect" {% if light.data.alert=='lselect' %} selected {% endif %}>lselect</option>
-                </select>
-            </label>
-            <div>reachable: {{ light.data.reachable }}</div>
-            <div>type: {{ light.data.type}}</div>
-            <input type="submit" value="set">
-        </div>
-    </form>
-    {% endfor %}
-</div>
+
+{% for light in lights %}
+    {% include 'partials/light-form.html' %}
+
+    {% if light.type == 'Dimmable light' %}
+        {% include 'partials/dimm-light-form.html' %}
+    {% endif %}
+
+    {% if light.type == 'Color temperature light' %}
+        {% include 'partials/dimm-light-form.html' %}
+        {% include 'partials/color-temp-form.html' %}
+    {% endif %}
+
+    {% if light.type == 'Extended color light' %}
+        {% include 'partials/dimm-light-form.html' %}
+        {% if light.colormode == 'xy' %}
+            {% include 'partials/xy-form.html' %}
+        {% elif light.colormode == 'ct' %}
+            {% include 'partials/color-temp-form.html' %}
+        {% elif light.colormode == 'hs' %}
+            {% include 'partials/hue-form.html' %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
 {% endblock %}

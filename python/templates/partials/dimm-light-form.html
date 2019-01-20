@@ -1,0 +1,9 @@
+<form action='/hue' method="POST" name="dimm_light" id="dimm-light_{{ light.light_id }}">
+    <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
+    <input type="text" hidden value="dimm" name="action" />
+    <label>
+        Brightness:
+        <input name="brightness" type="range" min="1" max="254" value="light_{{ light.brightness}}" />
+    </label>
+    <input type="submit" value="✔">
+</form>
