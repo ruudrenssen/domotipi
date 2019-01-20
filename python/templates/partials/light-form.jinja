@@ -1,18 +1,21 @@
-<form action='/hue' method="POST" name="light" id="light_{{ light.light_id }}">
-    <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
-    <div>Id: {{ light.light_id}}</div>
-    <label>
-        Name:
-        <input name="name" type="text" value="{{ light.name }}" />
-    </label>
-    <label>
-        On:
-        <input type="radio" name="on" value="true" {% if light.on %} checked {% endif %}>
-    </label>
-    <label>
-        Off:
-        <input type="radio" name="on" value="false" {% if not light.on %} checked {% endif %}>
-    </label>
-    <input type="submit" value="✔">
+<form action='/hue' method="POST" class="light-cell" name="light" id="light_{{ light.light_id }}">
+    <div class="cell-rule">
+        <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
+        <label>
+            Name:
+            <input name="name" type="text" value="{{ light.name }}" />
+        </label>
+        <input type="submit" value="✔">
+    </div>
+    <div class="cell-rule">
+        <label>
+            On:
+            <input type="radio" name="on" value="true" {% if light.on %} checked {% endif %}>
+        </label>
+        <label>
+            Off:
+            <input type="radio" name="on" value="false" {% if not light.on %} checked {% endif %}>
+        </label>
+    </div>
     <div>Reachable: {{ light.reachable }}</div>
 </form>

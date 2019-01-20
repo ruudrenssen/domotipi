@@ -1,12 +1,14 @@
-<form action='/hue' method="POST" name="xy" id="xy-light_{{ light.light_id }}">
+<form action='/hue' class="light-cell" method="POST" name="xy" id="xy-light_{{ light.light_id }}">
     <input type="text" hidden value="light_{{ light.light_id }}" name="light_id" />
-    <label>
-        X:
-        <input name="x_value" type="Number" min="0" max="1"/>
-    </label>
-    <label>
-        y:
-        <input name="y_value" type="Number" min="0" max="1"/>
-    </label>
-    <input type="submit" value="✔">
+    <div class="cell-rule">
+        <label>
+            X:
+            <input name="x_value" type="Number" min="0" max="1"/>
+        </label>
+        <label>
+            y:
+            <input name="y_value" type="Number" min="0" max="1"/>
+        </label>
+        <input type="submit" value="✔">
+    </div>
 </form>
