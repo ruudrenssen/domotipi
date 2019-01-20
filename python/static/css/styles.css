@@ -26,6 +26,10 @@ input, button {
     color: var(--foreground);
 }
 
+label {
+    display: block;
+}
+
 .lights {
     display: grid;
     grid-gap: var(--gutter);
