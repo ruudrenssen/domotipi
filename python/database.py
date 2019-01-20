@@ -1,25 +1,34 @@
 import configparser
-from flask_mysqldb import MySQL
+import mysql
+import mysql.connector
+from mysql.connector import errorcode
 
 
 class Database:
     def __init__(self, app):
         config = configparser.ConfigParser()
         config.read('config.ini')
-        username = config['MYSQL']['USERNAME']
-        password = config['MYSQL']['PASSWORD']
 
-        # Config MySQL
-        app.config['MYSQL_HOST'] = '127.0.0.1'
-        app.config['MYSQL_USER'] = username
-        app.config['MYSQL_PASSWORD'] = password
-        app.config['MYSQL_DB'] = 'domotipi'
-        app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+        self.host = 'localhost'
+        self.user = config['MYSQL']['USERNAME']
+        self.password = config['MYSQL']['PASSWORD']
+        self.database = 'domotipi'
 
-        mysql = MySQL()
+        print(self.user + ': ' + self.password)
+        self.open()
 
-        print(mysql)
-
-        # cursor = mysql.connection.cursor()
-
-        # print(cursor.execute("GET * FROM " "group_table"))
+    def open(self):
+        try:
+            cnx = mysql.connector.connect(host=self.host,
+                                          user=self.user,
+                                          password=self.password,
+                                          database=self.database)
+            connection = cnx
+            session = cnx.cursor()
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print('Something is wrong with your user name or password')
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print('Database does not exists')
+            else:
+                print(err)
