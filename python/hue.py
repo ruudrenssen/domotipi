@@ -14,7 +14,7 @@ class Hue():
         self.lights = self.bridge.lights
 
     def transition_to_bright(self, light, seconds):
-        self.bridge.set_light(light.name, 'bri', 125, transitiontime=(seconds * 10))
+        self.bridge.set_light(light.name, 'bri', 254, transitiontime=(seconds * 10))
 
     def process_form(self, form):
         form = form.copy()
