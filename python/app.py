@@ -15,7 +15,7 @@ def index():
 @app.route('/hue', methods=['POST', 'GET'])
 def hue_light_info():
     form = request.form
-    print(form)
+    hue.process_form(form)
     return redirect("/", code=302)
 
 
