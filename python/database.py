@@ -14,7 +14,6 @@ class Database:
         self.password = config['MYSQL']['PASSWORD']
         self.database = 'domotipi'
 
-        print(self.user + ': ' + self.password)
         self.open()
 
     def open(self):
@@ -25,6 +24,8 @@ class Database:
                                           database=self.database)
             connection = cnx
             session = cnx.cursor()
+            session.execute("select * from groups_table")
+            print(session.fetchall())
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print('Something is wrong with your user name or password')
