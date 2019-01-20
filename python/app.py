@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('all.html', lights=hue.lights)
+    return render_template('all.jinja', lights=hue.lights)
 
 
 @app.route('/hue', methods=['POST', 'GET'])
