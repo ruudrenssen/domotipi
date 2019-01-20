@@ -3,7 +3,7 @@ import distutils.util
 from phue import Bridge
 
 
-class Hue():
+class Hue:
     def __init__(self):
         config = configparser.ConfigParser()
         config.read('config.ini')

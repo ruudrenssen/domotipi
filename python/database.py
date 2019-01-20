@@ -1,30 +1,33 @@
 import configparser
 import mysql
 import mysql.connector
+from event import Event
 from mysql.connector import errorcode
 
 
-class Database:
-    def __init__(self, app):
+class Database(object):
+    event = Event('fire')
+
+    def __init__(self):
         config = configparser.ConfigParser()
         config.read('config.ini')
 
-        self.host = 'localhost'
+        self.host = config['MYSQL']['HOST']
         self.user = config['MYSQL']['USERNAME']
         self.password = config['MYSQL']['PASSWORD']
         self.database = 'domotipi'
 
-        print(self.user + ': ' + self.password)
-        self.open()
-
     def open(self):
         try:
-            cnx = mysql.connector.connect(host=self.host,
-                                          user=self.user,
-                                          password=self.password,
-                                          database=self.database)
-            connection = cnx
-            session = cnx.cursor()
+            connection = mysql.connector.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database)
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM groups_table")
+            self.dispatch_event()
+
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print('Something is wrong with your user name or password')
@@ -32,3 +35,6 @@ class Database:
                 print('Database does not exists')
             else:
                 print(err)
+
+    def dispatch_event(self):
+        self.event('event content')

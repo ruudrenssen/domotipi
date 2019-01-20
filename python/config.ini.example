@@ -6,5 +6,6 @@ IP_ADDRESS = 127.0.0.1
 IP_ADDRESS = 127.0.0.1
 
 [MYSQL]
+HOST = localhost
 USERNAME = username
 PASSWORD = mysql_password
