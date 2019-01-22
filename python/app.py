@@ -2,16 +2,17 @@ from flask import Flask, render_template, request, redirect
 from kodi import KodiRemote
 from hue import Hue
 from database import Database
+from rooms import Rooms
 
 app = Flask(__name__)
-db = Database()
 kodi = KodiRemote()
 hue = Hue()
+db = Database()
+rooms = Rooms()
 
 
-def callback(sender, earg):
-    print(sender)
-    print(earg)
+def db_connected_callback(sender, earg):
+    rooms.sync_rooms(earg, hue.rooms)
 
 
 @app.route('/')
@@ -33,7 +34,8 @@ def kodi_action():
     return redirect("/", code=302)
 
 
+db.event += db_connected_callback
+db.open()
+
 if __name__ == '__main__':
-    db.event += callback
-    db.open()
     app.run(debug=True)

@@ -7,6 +7,7 @@ from mysql.connector import errorcode
 
 class Database(object):
     event = Event('fire')
+    rooms_table = []
 
     def __init__(self):
         config = configparser.ConfigParser()
@@ -15,7 +16,7 @@ class Database(object):
         self.host = config['MYSQL']['HOST']
         self.user = config['MYSQL']['USERNAME']
         self.password = config['MYSQL']['PASSWORD']
-        self.database = 'domotipi'
+        self.database_name = 'domotipi'
 
     def open(self):
         try:
@@ -23,10 +24,9 @@ class Database(object):
                 host=self.host,
                 user=self.user,
                 password=self.password,
-                database=self.database)
-            cursor = connection.cursor()
-            cursor.execute("SELECT * FROM groups_table")
-            self.dispatch_event()
+                database=self.database_name)
+            self.rooms_table = self.query_rooms(connection)
+            self.dispatch_event(self.rooms_table)
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -36,5 +36,14 @@ class Database(object):
             else:
                 print(err)
 
-    def dispatch_event(self):
-        self.event('event content')
+    @staticmethod
+    def query_rooms(connection):
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM rooms")
+        rooms = cursor.fetchall()
+        connection.close()
+        return rooms
+
+    def dispatch_event(self, identifier):
+        self.event(identifier)
+

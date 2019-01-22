@@ -10,7 +10,7 @@ class Hue:
         ip = config['HUE']['IP_ADDRESS']
 
         self.bridge = Bridge(ip)
-        self.light_groups = self.bridge.groups
+        self.rooms = self.bridge.groups
         self.lights = self.bridge.lights
 
     def transition_to_bright(self, light, seconds):
