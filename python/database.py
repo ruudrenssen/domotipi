@@ -6,7 +6,9 @@ from mysql.connector import errorcode
 
 
 class Database(object):
+    connection = {}
     event = Event('fire')
+    rooms_table = []
 
     def __init__(self):
         config = configparser.ConfigParser()
@@ -15,18 +17,17 @@ class Database(object):
         self.host = config['MYSQL']['HOST']
         self.user = config['MYSQL']['USERNAME']
         self.password = config['MYSQL']['PASSWORD']
-        self.database = 'domotipi'
+        self.database_name = 'domotipi'
 
     def open(self):
         try:
-            connection = mysql.connector.connect(
+            self.connection = mysql.connector.connect(
                 host=self.host,
                 user=self.user,
                 password=self.password,
-                database=self.database)
-            cursor = connection.cursor()
-            cursor.execute("SELECT * FROM groups_table")
-            self.dispatch_event()
+                database=self.database_name)
+            self.rooms_table = self.query_rooms()
+            self.dispatch_event('connected')
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -36,5 +37,20 @@ class Database(object):
             else:
                 print(err)
 
-    def dispatch_event(self):
-        self.event('event content')
+    def remove_rooms(self):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        cursor.execute("TRUNCATE TABLE rooms")
+        self.connection.close()
+
+    def query_rooms(self):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM rooms")
+        rooms = cursor.fetchall()
+        print(rooms)
+        self.connection.close()
+        return rooms
+
+    def dispatch_event(self, identifier):
+        self.event(identifier)
+
