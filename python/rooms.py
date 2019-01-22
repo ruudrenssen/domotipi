@@ -4,6 +4,7 @@ class Rooms:
     def sync_rooms(self, database, groups):
         print(database)
         print(groups[1].name)
+        database.remove_rooms()
         pass
 
     def remove_room_by_id(self, identifier):
@@ -20,7 +21,6 @@ class Room:
     lights = []
     light_groups = []
 
-    def __init__(self, id, name):
-        self.room_id = id
+    def __init__(self, room_id, name):
+        self.room_id = room_id
         self.room_name = name
-        print(id)

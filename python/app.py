@@ -11,8 +11,8 @@ db = Database()
 rooms = Rooms()
 
 
-def db_connected_callback(sender, earg):
-    rooms.sync_rooms(earg, hue.rooms)
+def db_connected_callback(sender, identifier):
+    rooms.sync_rooms(sender, hue.rooms)
 
 
 @app.route('/')
