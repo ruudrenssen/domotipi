@@ -2,10 +2,14 @@ class Rooms:
     rooms = []
 
     def sync_rooms(self, database, groups):
-        print(database)
-        print(groups[1].name)
+        database.event += self.clear_db_callback
         database.remove_rooms()
-        pass
+
+    @staticmethod
+    def clear_db_callback(sender, identifier):
+        if identifier == 'ROOMS_REMOVED':
+            # rooms removed from database, create rooms based on hue
+            pass
 
     def remove_room_by_id(self, identifier):
         pass

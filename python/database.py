@@ -27,7 +27,7 @@ class Database(object):
                 password=self.password,
                 database=self.database_name)
             self.rooms_table = self.query_rooms()
-            self.dispatch_event('connected')
+            self.dispatch_event('DB_CONNECTED')
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -42,12 +42,15 @@ class Database(object):
         cursor = self.connection.cursor()
         cursor.execute("TRUNCATE TABLE rooms")
         self.connection.close()
+        self.dispatch_event('ROOMS_REMOVED')
+
+    def add_room(self):
+        pass
 
     def query_rooms(self):
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM rooms")
         rooms = cursor.fetchall()
-        print(rooms)
         self.connection.close()
         return rooms
 

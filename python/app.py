@@ -12,7 +12,8 @@ rooms = Rooms()
 
 
 def db_connected_callback(sender, identifier):
-    rooms.sync_rooms(sender, hue.rooms)
+    if identifier == 'DB_CONNECTED':
+        rooms.sync_rooms(sender, hue.rooms)
 
 
 @app.route('/')
