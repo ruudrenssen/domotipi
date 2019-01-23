@@ -75,7 +75,7 @@ class Database(object):
         self.connection.connect()
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM rooms")
-        rooms = cursor.fetchall().copy()
+        rooms = cursor.fetchall()
         self.connection.close()
         return rooms
 

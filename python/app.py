@@ -11,23 +11,23 @@ db = Database()
 rooms = Rooms()
 
 
-"""" Default route """
 @app.route('/')
 def index():
+    """" Default route """
     return render_template('all.jinja', lights=hue.lights)
 
 
-"""" Handle Phillips Hue commands """
 @app.route('/hue', methods=['POST', 'GET'])
 def hue_light_info():
+    """" Handle Phillips Hue commands """
     form = request.form
     hue.process_form(form)
     return redirect("/", code=302)
 
 
-"""" Handle Kodi media player commands """
 @app.route('/kodi', methods=['POST', 'GET'])
 def kodi_action():
+    """" Handle Kodi media player commands """
     form = request.form
     getattr(kodi, form['kodi_action'])()
     return redirect("/", code=302)
