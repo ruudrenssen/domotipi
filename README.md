@@ -4,12 +4,6 @@ Remote control for Phillips Hue lights and Kodi media player
 ## Introduction
 A web app that turns your browser in a remote control for your lights and media player.
 
-## Languages
-- Python
-- Javascript
-- HTML
-- CSS
-
 ## Support
 - Phillips Hue lights
 - Kodi media player
