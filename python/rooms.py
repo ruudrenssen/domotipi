@@ -1,8 +1,8 @@
 class Rooms:
     rooms = []
 
-    """" Sync vendor information with database """
     def sync_rooms(self, database, groups):
+        """" Sync vendor information with database """
         database.remove_rooms()
         database.add_rooms(groups)
         for result in database.rooms():
@@ -13,13 +13,12 @@ class Rooms:
 
 
 class Room:
-    """" Room properties """
+    """" Room properties and available devices """
     room_id = ''
     room_name = ''
     vendor_id = 0
     hidden = False
 
-    """" Devices in this room """
     media_players = []
     lights = []
 
