@@ -11,11 +11,6 @@ db = Database()
 rooms = Rooms()
 
 
-def db_connected_callback(sender, identifier):
-    if identifier == 'DB_CONNECTED':
-        rooms.sync_rooms(sender, hue.rooms)
-
-
 @app.route('/')
 def index():
     return render_template('all.jinja', lights=hue.lights)
@@ -35,8 +30,8 @@ def kodi_action():
     return redirect("/", code=302)
 
 
-db.event += db_connected_callback
 db.open()
+rooms.sync_rooms(db, hue.rooms)
 
 if __name__ == '__main__':
     app.run(debug=True)

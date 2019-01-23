@@ -1,13 +1,11 @@
 import configparser
 import mysql
 import mysql.connector
-from event import Event
 from mysql.connector import errorcode
 
 
 class Database(object):
     connection = {}
-    event = Event('fire')
     rooms_table = []
 
     def __init__(self):
@@ -27,7 +25,6 @@ class Database(object):
                 password=self.password,
                 database=self.database_name)
             self.rooms_table = self.query_rooms()
-            self.dispatch_event('DB_CONNECTED')
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -42,18 +39,40 @@ class Database(object):
         cursor = self.connection.cursor()
         cursor.execute("TRUNCATE TABLE rooms")
         self.connection.close()
-        self.dispatch_event('ROOMS_REMOVED')
 
-    def add_room(self):
-        pass
+    def add_rooms(self, rooms):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        for room in rooms:
+            vendor_id = room.group_id
+            name = room.name
+            sql = """INSERT INTO rooms (name, vendor_id, hidden) VALUES ('%s', '%s', '%s')""" % (name, vendor_id, False)
+            cursor.execute(sql)
+        self.connection.commit()
+        self.connection.close()
+
+    def remove_lights(self):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        cursor.execute("TRUNCATE TABLE lights")
+        self.connection.close()
+
+    def add_lights(self, lights):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        for light in lights:
+            vendor_id = light.group_id
+            name = light.name
+            sql = """INSERT INTO rooms (name, vendor_id, hidden) VALUES ('%s', '%s', '%s')""" % (name, vendor_id, False)
+            cursor.execute(sql)
+        self.connection.commit()
+        self.connection.close()
 
     def query_rooms(self):
+        self.connection.connect()
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM rooms")
         rooms = cursor.fetchall()
         self.connection.close()
         return rooms
-
-    def dispatch_event(self, identifier):
-        self.event(identifier)
 
