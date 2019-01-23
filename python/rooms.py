@@ -2,16 +2,10 @@ class Rooms:
     rooms = []
 
     def sync_rooms(self, database, groups):
-        print(database)
-        print(groups[1].name)
         database.remove_rooms()
-        pass
-
-    def remove_room_by_id(self, identifier):
-        pass
-
-    def add_room(self, room_name):
-        self.rooms.append(Room(self.rooms.count, room_name))
+        database.add_rooms(groups)
+        self.rooms = database.query_rooms()
+        print(self.rooms)
 
 
 class Room:
