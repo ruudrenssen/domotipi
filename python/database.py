@@ -9,6 +9,7 @@ class Database(object):
     rooms_table = []
 
     def __init__(self):
+        """" Load configuration """
         config = configparser.ConfigParser()
         config.read('config.ini')
 
@@ -18,13 +19,14 @@ class Database(object):
         self.database_name = 'domotipi'
 
     def open(self):
+        """" Open MariaDB connection """
         try:
             self.connection = mysql.connector.connect(
                 host=self.host,
                 user=self.user,
                 password=self.password,
                 database=self.database_name)
-            self.rooms_table = self.query_rooms()
+            self.rooms_table = self.rooms()
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -68,11 +70,12 @@ class Database(object):
         self.connection.commit()
         self.connection.close()
 
-    def query_rooms(self):
+    def rooms(self):
+        """" Return all rooms """
         self.connection.connect()
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM rooms")
-        rooms = cursor.fetchall()
+        rooms = cursor.fetchall().copy()
         self.connection.close()
         return rooms
 
