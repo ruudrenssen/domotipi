@@ -21,7 +21,7 @@ class Hue:
         if bridge.connect():
             return True
         else:
-            print('connection to hue failed')
+            print('could not connect to hue bridge')
             return False
 
     def transition_to_bright(self, light, seconds):

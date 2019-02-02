@@ -11,9 +11,15 @@ db = Database()
 rooms = Rooms()
 
 
+"""" Prepare the database """
+db.open()
+# rooms.sync_rooms(db, hue.rooms)
+
+
 """" Default route """
 @app.route('/')
 def index():
+    # todo: pass database object instead of lights
     return render_template('all.jinja', lights=hue.lights)
 
 
@@ -31,11 +37,6 @@ def kodi_action():
     form = request.form
     getattr(kodi, form['kodi_action'])()
     return redirect("/", code=302)
-
-
-"""" Prepare the database """
-db.open()
-# rooms.sync_rooms(db, hue.rooms)
 
 
 """" Run the app """

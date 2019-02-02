@@ -22,26 +22,34 @@ class KodiRemote():
         except:
             return False
 
-    def get_movies(self):
-        pass
+    @staticmethod
+    def get_movies(kodi):
+        kodi.VideoLibrary.GetMovies()
 
-    def left(self):
-        self.kodi.Input.Left()
+    @staticmethod
+    def left(kodi):
+        kodi.Input.Left()
 
-    def right(self):
-        self. kodi.Input.Right()
+    @staticmethod
+    def right(kodi):
+         kodi.Input.Right()
 
-    def up(self):
-        self.kodi.Input.Up()
+    @staticmethod
+    def up(kodi):
+        kodi.Input.Up()
 
-    def down(self):
-        self.kodi.Input.Down()
+    @staticmethod
+    def down(kodi):
+        kodi.Input.Down()
 
-    def back(self):
-        self.kodi.Input.Back()
+    @staticmethod
+    def back(kodi):
+        kodi.Input.Back()
 
-    def info(self):
-        self.kodi.Input.Info()
+    @staticmethod
+    def info(kodi):
+        kodi.Input.Info()
 
-    def playpause(self):
-        self.kodi.Player.PlayPause([PLAYER_VIDEO])
+    @staticmethod
+    def playpause(kodi):
+        kodi.Player.PlayPause([PLAYER_VIDEO])
