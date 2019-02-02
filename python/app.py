@@ -24,7 +24,7 @@ def index():
 
 
 """" All lights setup """
-def index():
+def all_lights():
     return render_template('lights.jinja', lights=hue.lights)
 
 
