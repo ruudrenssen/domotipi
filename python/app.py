@@ -19,8 +19,13 @@ db.open()
 """" Default route """
 @app.route('/')
 def index():
-    # todo: pass database object instead of lights
-    return render_template('all.jinja', lights=hue.lights)
+    # todo: pass database object for rendering relevant controls
+    return render_template('index.jinja')
+
+
+"""" All lights setup """
+def index():
+    return render_template('lights.jinja', lights=hue.lights)
 
 
 """" Handle Phillips Hue commands """
