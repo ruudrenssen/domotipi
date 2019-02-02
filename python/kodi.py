@@ -7,10 +7,23 @@ class KodiRemote():
         config = configparser.ConfigParser()
         config.read('config.ini')
         ip = config['KODI']['IP_ADDRESS']
-        self.kodi = Kodi('http://' + ip + '/jsonrpc')
+        kodi = self.check_connection(ip)
+        if kodi:
+            print('connected to kodi')
+        else:
+            print('could not connect to kodi')
+
+    @staticmethod
+    def check_connection(ip):
+        kodi = Kodi('http://' + ip + '/jsonrpc')
+        try:
+            kodi.JSONRPC.Ping()
+            return kodi
+        except:
+            return False
 
     def get_movies(self):
-        print(self.movieList)
+        pass
 
     def left(self):
         self.kodi.Input.Left()
