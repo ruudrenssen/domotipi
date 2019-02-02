@@ -10,8 +10,19 @@ class Hue:
         ip = config['HUE']['IP_ADDRESS']
 
         self.bridge = Bridge(ip)
-        self.rooms = self.bridge.groups
-        self.lights = self.bridge.lights
+
+        if self.connect_to_hue(self.bridge):
+            self.rooms = self.bridge.groups
+            self.lights = self.bridge.lights
+            print('lights and rooms loaded')
+
+    @staticmethod
+    def connect_to_hue(bridge):
+        if bridge.connect():
+            return True
+        else:
+            print('connection to hue failed')
+            return False
 
     def transition_to_bright(self, light, seconds):
         self.bridge.set_light(light.name, 'bri', 254, transitiontime=(seconds * 10))

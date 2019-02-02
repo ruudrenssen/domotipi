@@ -8,7 +8,6 @@ class KodiRemote():
         config.read('config.ini')
         ip = config['KODI']['IP_ADDRESS']
         self.kodi = Kodi('http://' + ip + '/jsonrpc')
-        self.movieList = self.kodi.VideoLibrary.GetMovies()
 
     def get_movies(self):
         print(self.movieList)

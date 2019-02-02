@@ -35,7 +35,7 @@ def kodi_action():
 
 """" Prepare the database """
 db.open()
-rooms.sync_rooms(db, hue.rooms)
+# rooms.sync_rooms(db, hue.rooms)
 
 
 """" Run the app """
