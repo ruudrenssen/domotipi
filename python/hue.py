@@ -18,18 +18,21 @@ class Hue:
 
     @staticmethod
     def connect_to_hue(bridge):
-        if bridge.connect():
+        try:
+            bridge.connect()
             return True
-        else:
-            print('could not connect to hue bridge')
+        except Exception as exception:
+            print(exception)
             return False
 
     def transition_to_bright(self, light, seconds):
         self.bridge.set_light(light.name, 'bri', 254, transitiontime=(seconds * 10))
 
-    def process_form(self, form):
+    def transform_light(self, form):
         # copy form in order to mutate
         form = form.copy()
+
+        # get light_id and strip it from the form object
         light_id = int(form.pop('light_id').strip('light_'))
 
         """" Set light properties """

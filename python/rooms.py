@@ -7,9 +7,7 @@ class Rooms:
         database.add_rooms(groups)
         for result in database.rooms():
             room = Room(result[0], result[2], result[2])
-            print(result)
             self.rooms.append(room)
-        print(self.rooms)
 
 
 class Room:
@@ -27,3 +25,19 @@ class Room:
         self.room_name = name
         self.vendor_id = vendor_id
         self.hidden
+
+    @staticmethod
+    def dim_room():
+        pass
+
+    @staticmethod
+    def set_scene(name):
+        pass
+
+    @staticmethod
+    def lights_fade_out(time):
+        pass
+
+    @staticmethod
+    def lights_off():
+        pass
