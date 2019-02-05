@@ -3,7 +3,7 @@ class Lights:
 
     def sync_lights(self, database, lights):
         """ Sync vendor information with database """
-        database.remove_lights()
+        database.reset_lights_table()
         database.add_lights(lights)
         # for result in database.lights():
         #     light = Light(result[0], result[2], result[2])

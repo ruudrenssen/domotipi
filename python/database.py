@@ -20,17 +20,25 @@ class Database(object):
     def open(self):
         """ Open MariaDB connection """
         try:
-            self.connection = mysql.connector.connect(
-                host=self.host,
-                user=self.user,
-                password=self.password,
-                database=self.database_name)
+            self.set_connection()
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print('Something is wrong with your user name or password')
             elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                # todo: database does not exist, create one
-                pass
+                if err.errno == 1049:
+                    """ No database named domotipi found. Create database domotpi """
+                    connection = mysql.connector.connect(
+                        host=self.host,
+                        user=self.user,
+                        password=self.password)
+                    connection.connect()
+                    cursor = connection.cursor()
+                    sql = """CREATE DATABASE domotipi""" # todo: replace domotipi with config var
+                    cursor.execute(sql)
+                    connection.commit()
+                    connection.close()
+
+                    self.set_connection()
             else:
                 print(err)
 
@@ -54,14 +62,26 @@ class Database(object):
         self.connection.commit()
         self.connection.close()
 
-    def remove_rooms(self):
+    def reset_rooms_table(self):
         self.connection.connect()
         cursor = self.connection.cursor()
-        cursor.execute("TRUNCATE TABLE rooms")
+        try:
+            cursor.execute("TRUNCATE TABLE rooms")
+        except mysql.connector.Error as err:
+            # create new table for rooms
+            sql = """ CREATE TABLE `domotipi`.`rooms` 
+                    ( `id` INT(3) NOT NULL AUTO_INCREMENT ,
+                    `name` INT NOT NULL , 
+                    `vendor_id` INT NOT NULL ,  
+                    `hidden` BOOLEAN NOT NULL , 
+                    `brightness` TINYINT(3) NOT NULL ,
+                    PRIMARY KEY (`id`)) 
+                    ENGINE = InnoDB; """
+            cursor.execute(sql)
         self.connection.close()
 
     def lights(self):
-        """ Return all lights """
+        # Return all lights
         self.connection.connect()
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM lights")
@@ -87,10 +107,30 @@ class Database(object):
         self.connection.close()
         return lights
 
-    def remove_lights(self):
+    def reset_lights_table(self):
         self.connection.connect()
         cursor = self.connection.cursor()
-        cursor.execute("TRUNCATE TABLE lights")
+        try:
+            cursor.execute("TRUNCATE TABLE lights")
+        except mysql.connector.Error as err:
+            # create new lights table
+            sql = """CREATE TABLE `domotipi`.`lights` 
+            ( `id` INT(3) NOT NULL AUTO_INCREMENT , 
+            `type` VARCHAR(64) NOT NULL , 
+            `name` INT NOT NULL , 
+            `vendor_id` INT NOT NULL , 
+            `reachable` BOOLEAN NOT NULL , 
+            `on` BOOLEAN NOT NULL , 
+            `brightness` TINYINT(3) NOT NULL , 
+            `colormode` VARCHAR(64) NOT NULL , 
+            `colortemp` SMALLINT NOT NULL , 
+            `hue` SMALLINT(5) NOT NULL , 
+            `saturation` TINYINT(3) NOT NULL , 
+            `x_value` DECIMAL(6) NOT NULL , 
+            `y_value` DECIMAL(6) NOT NULL , 
+            PRIMARY KEY (`id`)) 
+            ENGINE = InnoDB; """
+            cursor.execute(sql)
         self.connection.close()
 
     @staticmethod
@@ -104,10 +144,10 @@ class Database(object):
         brightness = light.brightness
 
         sql = """
-        INSERT INTO lights 
-        (name, vendor_id, on_state, reachable, type, brightness)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s')""" \
-              % (name, vendor_id, on_state, reachable, light_type, brightness)
+            INSERT INTO lights (
+            `type`, `name`, `vendor_id`, `reachable`, `on`, `brightness`) 
+            VALUES ('%s', '%s', '%s', '%s', '%s', '%s')""" \
+              % (light_type, name, vendor_id, reachable, on_state, brightness)
         cursor.execute(sql)
 
     @staticmethod
@@ -123,10 +163,12 @@ class Database(object):
         colortemp = light.colortemp
 
         sql = """
-        INSERT INTO lights 
-        (name, vendor_id, on_state, reachable, type, brightness, colortemp, colormode)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')""" \
-              % (name, vendor_id, on_state, reachable, light_type, brightness, colortemp, colormode)
+                    INSERT INTO lights (
+                    `type`, `name`, `vendor_id`, `reachable`, `on`, `brightness`, 
+                    `colormode`, `colortemp`) 
+                    VALUES (
+                    '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')""" \
+              % (light_type, name, vendor_id, reachable, on_state, brightness, colormode, colortemp)
         cursor.execute(sql)
 
     @staticmethod
@@ -146,10 +188,13 @@ class Database(object):
         y_value = light.xy[1]
 
         sql = """
-        INSERT INTO lights 
-        (name, vendor_id, on_state, reachable, type, brightness, colormode, colortemp, hue, saturation, x_value, y_value)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')""" \
-              % (name, vendor_id, on_state, reachable, light_type, brightness, colormode, colortemp, hue, saturation, x_value, y_value)
+            INSERT INTO lights (
+            `type`, `name`, `vendor_id`, `reachable`, `on`, `brightness`, 
+            `colormode`, `colortemp`, `hue`, `saturation`, `x_value`, `y_value`) 
+            VALUES (
+            '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')""" \
+              % (light_type, name, vendor_id, reachable, on_state, brightness,
+                 colormode, colortemp, hue, saturation, x_value, y_value)
         cursor.execute(sql)
 
     def add_light_to_room(self, light_id, room_id):
@@ -171,7 +216,22 @@ class Database(object):
         sql = """
                 DELETE FROM rooms_lights WHERE room_id='%s'
                 """ % room_id
-        print(sql)
-        cursor.execute(sql)
+        try:
+            cursor.execute(sql)
+        except mysql.connector.Error as err:
+            # create new table for rooms
+            sql = """CREATE TABLE `domotipi`.`rooms_lights` 
+                            (`room_id` INT NOT NULL , 
+                            `light_id` INT NOT NULL ,
+                            PRIMARY KEY (`room_id`, `light_id`)) 
+                            ENGINE = InnoDB;"""
+            cursor.execute(sql)
         self.connection.commit()
         self.connection.close()
+
+    def set_connection(self):
+        self.connection = mysql.connector.connect(
+            host=self.host,
+            user=self.user,
+            password=self.password,
+            database=self.database_name)

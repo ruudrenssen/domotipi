@@ -3,7 +3,7 @@ class Rooms:
 
     def sync_rooms(self, database, groups):
         """" Sync vendor information with database """
-        database.remove_rooms()
+        database.reset_rooms_table()
         database.add_rooms(groups)
         for result in database.rooms():
             # Create new room object for each room, add lights based on vendor_id and add the room to the rooms object
