@@ -6,7 +6,6 @@ from mysql.connector import errorcode
 
 class Database(object):
     connection = {}
-    rooms_table = []
 
     def __init__(self):
         """ Load configuration """
@@ -26,21 +25,23 @@ class Database(object):
                 user=self.user,
                 password=self.password,
                 database=self.database_name)
-            self.rooms_table = self.rooms()
-
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print('Something is wrong with your user name or password')
             elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                print('Database does not exists')
+                # todo: database does not exist, create one
+                pass
             else:
                 print(err)
 
-    def remove_rooms(self):
+    def rooms(self):
+        """ Return all rooms """
         self.connection.connect()
         cursor = self.connection.cursor()
-        cursor.execute("TRUNCATE TABLE rooms")
+        cursor.execute("SELECT * FROM rooms")
+        rooms = cursor.fetchall()
         self.connection.close()
+        return rooms
 
     def add_rooms(self, rooms):
         self.connection.connect()
@@ -53,20 +54,20 @@ class Database(object):
         self.connection.commit()
         self.connection.close()
 
-    def rooms(self):
-        """" Return all rooms """
+    def remove_rooms(self):
         self.connection.connect()
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM rooms")
-        rooms = cursor.fetchall()
+        cursor.execute("TRUNCATE TABLE rooms")
         self.connection.close()
-        return rooms
 
-    def remove_lights(self):
+    def lights(self):
+        """ Return all lights """
         self.connection.connect()
         cursor = self.connection.cursor()
-        cursor.execute("TRUNCATE TABLE lights")
+        cursor.execute("SELECT * FROM lights")
+        lights = cursor.fetchall()
         self.connection.close()
+        return lights
 
     def add_lights(self, lights):
         self.connection.connect()
@@ -84,9 +85,17 @@ class Database(object):
                 self.add_dimmable_color_light(light, cursor)
         self.connection.commit()
         self.connection.close()
+        return lights
+
+    def remove_lights(self):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        cursor.execute("TRUNCATE TABLE lights")
+        self.connection.close()
 
     @staticmethod
     def add_dimmable_color_light(light, cursor):
+        """ Philips Hue Dimmable Light """
         light_type = 'Dimmable light'
         name = light.name
         vendor_id = light.light_id
@@ -103,6 +112,7 @@ class Database(object):
 
     @staticmethod
     def add_color_temperature_light(light, cursor):
+        """ Philips Hue Color Temperature Light """
         light_type = 'Color temperature light'
         name = light.name
         vendor_id = light.light_id
@@ -121,6 +131,7 @@ class Database(object):
 
     @staticmethod
     def add_extended_color_light(light, cursor):
+        """ Philips Hue Extended Color Light """
         light_type = 'Extended color light'
         name = light.name
         vendor_id = light.light_id
@@ -141,12 +152,26 @@ class Database(object):
               % (name, vendor_id, on_state, reachable, light_type, brightness, colormode, colortemp, hue, saturation, x_value, y_value)
         cursor.execute(sql)
 
-    def lights(self):
-        """ Return all lights """
+    def add_light_to_room(self, light_id, room_id):
         self.connection.connect()
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM lights")
-        lights = cursor.fetchall()
+        sql = """
+        INSERT INTO rooms_lights
+        (room_id, light_id)
+        VALUES ('%s', '%s')
+        """ % (room_id, light_id)
+        print(sql)
+        cursor.execute(sql)
+        self.connection.commit()
         self.connection.close()
-        return lights
 
+    def remove_all_lights_from_group(self, room_id):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        sql = """
+                DELETE FROM rooms_lights WHERE room_id='%s'
+                """ % room_id
+        print(sql)
+        cursor.execute(sql)
+        self.connection.commit()
+        self.connection.close()

@@ -14,12 +14,12 @@ class Hue:
         if self.connect_to_hue(self.bridge):
             self.rooms = self.bridge.groups
             self.lights = self.bridge.lights
-            print('lights and rooms loaded')
 
     @staticmethod
     def connect_to_hue(bridge):
         try:
             bridge.connect()
+            print('connected to hue bridge')
             return True
         except Exception as exception:
             print(exception)

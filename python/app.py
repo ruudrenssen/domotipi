@@ -15,8 +15,8 @@ lights = Lights()
 
 """ Prepare the database """
 db.open()
-rooms.sync_rooms(db, hue.rooms)
 lights.sync_lights(db, hue.lights)
+rooms.sync_rooms(db, hue.rooms)
 
 
 @app.route('/')
