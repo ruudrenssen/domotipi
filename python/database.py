@@ -164,8 +164,7 @@ class Database(object):
 
         sql = """
                     INSERT INTO lights (
-                    `type`, `name`, `vendor_id`, `reachable`, `on`, `brightness`, 
-                    `colormode`, `colortemp`) 
+                    `type`, `name`, `vendor_id`, `reachable`, `on`, `brightness`, `colormode`, `colortemp`) 
                     VALUES (
                     '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')""" \
               % (light_type, name, vendor_id, reachable, on_state, brightness, colormode, colortemp)
