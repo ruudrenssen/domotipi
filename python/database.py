@@ -57,7 +57,8 @@ class Database(object):
         for room in rooms:
             vendor_id = room.group_id
             name = room.name
-            sql = """INSERT INTO rooms (name, vendor_id, hidden) VALUES ('%s', '%s', '%s')""" % (name, vendor_id, False)
+            brightness = room.brightness
+            sql = """INSERT INTO rooms (name, vendor_id, hidden, brightness) VALUES ('%s', '%s', '%s', '%s')""" % (name, vendor_id, False, brightness)
             cursor.execute(sql)
         self.connection.commit()
         self.connection.close()
@@ -71,10 +72,10 @@ class Database(object):
             # create new table for rooms
             sql = """ CREATE TABLE `domotipi`.`rooms` 
                     ( `id` INT(3) NOT NULL AUTO_INCREMENT ,
-                    `name` INT NOT NULL , 
+                    `name` VARCHAR(32) NOT NULL , 
                     `vendor_id` INT NOT NULL ,  
                     `hidden` BOOLEAN NOT NULL , 
-                    `brightness` TINYINT(3) NOT NULL ,
+                    `brightness` TINYINT(3) UNSIGNED NOT NULL ,
                     PRIMARY KEY (`id`)) 
                     ENGINE = InnoDB; """
             cursor.execute(sql)
@@ -105,7 +106,6 @@ class Database(object):
                 self.add_dimmable_color_light(light, cursor)
         self.connection.commit()
         self.connection.close()
-        return lights
 
     def reset_lights_table(self):
         self.connection.connect()
@@ -117,15 +117,15 @@ class Database(object):
             sql = """CREATE TABLE `domotipi`.`lights` 
             ( `id` INT(3) NOT NULL AUTO_INCREMENT , 
             `type` VARCHAR(64) NOT NULL , 
-            `name` INT NOT NULL , 
+            `name` VARCHAR(32) NOT NULL , 
             `vendor_id` INT NOT NULL , 
             `reachable` BOOLEAN NOT NULL , 
             `on` BOOLEAN NOT NULL , 
-            `brightness` TINYINT(3) NOT NULL , 
+            `brightness` TINYINT(3) UNSIGNED , 
             `colormode` VARCHAR(64) NOT NULL , 
             `colortemp` SMALLINT NOT NULL , 
             `hue` SMALLINT(5) NOT NULL , 
-            `saturation` TINYINT(3) NOT NULL , 
+            `saturation` TINYINT(3) UNSIGNED , 
             `x_value` DECIMAL(6) NOT NULL , 
             `y_value` DECIMAL(6) NOT NULL , 
             PRIMARY KEY (`id`)) 
@@ -204,7 +204,6 @@ class Database(object):
         (room_id, light_id)
         VALUES ('%s', '%s')
         """ % (room_id, light_id)
-        print(sql)
         cursor.execute(sql)
         self.connection.commit()
         self.connection.close()

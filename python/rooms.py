@@ -2,7 +2,7 @@ class Rooms:
     rooms = []
 
     def sync_rooms(self, database, groups):
-        """" Sync vendor information with database """
+        # Sync vendor information with database
         database.reset_rooms_table()
         database.add_rooms(groups)
         for result in database.rooms():
@@ -13,40 +13,41 @@ class Rooms:
 
 
 class Room:
-    """" Room properties and available devices """
+    # Room properties
     room_id = ''
     room_name = ''
     vendor_id = 0
     hidden = False
+    brightness = 125
 
+    # Available devices
     media_players = []
     lights = []
 
-    def __init__(self, room_id=0, name='', vendor_id=0, hidden=False):
+    def __init__(self, room_id=0, name='', vendor_id=0, hidden=False, brightness = 125):
         self.room_id = room_id
         self.room_name = name
         self.vendor_id = vendor_id
         self.hidden = hidden
+        self.brightness = brightness
 
     def sync_lights(self, database, lights):
-        # Remove lights from rooms_lights table
+        # Remove lights from rooms_lights table and lights object
         database.remove_all_lights_from_group(self.room_id)
-        # Add lights to rooms_lights table
+        self.lights = []
+        # Add lights to rooms_lights table and lights object
         for light in lights:
             database.add_light_to_room(light.light_id, self.room_id)
+            self.lights.append(light)
 
-    @staticmethod
-    def dim_room():
+    def dim_room(self):
         pass
 
-    @staticmethod
-    def set_scene(name):
+    def set_scene(self, name):
         pass
 
-    @staticmethod
-    def lights_fade_out(time):
+    def lights_fade_out(self, time):
         pass
 
-    @staticmethod
-    def lights_off():
+    def toggle_lights(seld):
         pass
