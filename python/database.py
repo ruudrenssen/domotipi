@@ -46,6 +46,8 @@ class Database(object):
     def config(self):
         self.connection.connect()
         cursor = self.connection.cursor()
+
+        # Create config table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `config` (
             `ID` int(11) NOT NULL AUTO_INCREMENT,
             `property` varchar(255) NOT NULL,
@@ -54,14 +56,21 @@ class Database(object):
             ENGINE = InnoDB;"""
         cursor.execute(sql)
 
-        sql = """ INSERT INTO `config` (property, value)
-            SELECT * FROM (SELECT 'default_room', 'def-room') AS tmp
-            WHERE NOT EXISTS (SELECT property FROM config WHERE property = `default_room`)"""
+        # Pick first room from DB and set as default
+        sql = """SELECT id FROM rooms"""
+        cursor.execute(sql)
+        default_room = cursor.fetchall()
+        sql = """INSERT INTO `config` (property, value)
+            SELECT * FROM (SELECT 'default_room', '%s') AS dummy_table
+            WHERE NOT EXISTS (SELECT property FROM config WHERE property = `default_room`)""" % default_room[0][0]
         cursor.execute(sql)
 
+        sql = """ SELECT * FROM config """
+        cursor.execute(sql)
+        config = cursor.fetchall()
         self.connection.commit()
         self.connection.close()
-        return 'replace with config'
+        return config
 
 
     def rooms(self):
@@ -229,7 +238,22 @@ class Database(object):
         self.connection.commit()
         self.connection.close()
 
-    def remove_all_lights_from_group(self, room_id):
+    def all_lights_from_room(self, room_id):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        sql = """
+                SELECT * FROM lights INNER JOIN rooms_lights ON lights.id=rooms_lights.light_id WHERE room_id='%s'
+                """ % room_id
+        try:
+            cursor.execute(sql)
+            lights = cursor.fetchall()
+            self.connection.close()
+            return lights
+        except mysql.connector.Error as err:
+            print(err)
+            self.connection.close()
+
+    def remove_all_lights_from_room(self, room_id):
         self.connection.connect()
         cursor = self.connection.cursor()
         sql = """

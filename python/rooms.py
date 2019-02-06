@@ -33,7 +33,7 @@ class Room:
 
     def sync_lights(self, database, lights):
         # Remove lights from rooms_lights table and lights object
-        database.remove_all_lights_from_group(self.room_id)
+        database.remove_all_lights_from_room(self.room_id)
         self.lights = []
         # Add lights to rooms_lights table and lights object
         for light in lights:

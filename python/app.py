@@ -22,12 +22,13 @@ rooms.sync_rooms(db, hue.rooms)
 @app.route('/')
 def index():
     """ Default route """
-    return redirect("/room/woonkamer", code=302)
+    return redirect("/room/" + config[0][2], code=302)
 
 
-@app.route('/room/<room_name>')
-def room(room_name):
-    return render_template('room.jinja', name=room_name)
+@app.route('/room/<room_id>')
+def room(room_id):
+    """ Route for room """
+    return render_template('room.jinja', name=room_id, lights_room=db.all_lights_from_room(room_id))
 
 
 @app.route('/all-lights')
