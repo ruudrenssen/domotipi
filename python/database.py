@@ -119,8 +119,8 @@ class Database(object):
             `type` VARCHAR(64) NOT NULL , 
             `name` VARCHAR(32) NOT NULL , 
             `vendor_id` INT NOT NULL , 
-            `reachable` BOOLEAN NOT NULL , 
-            `on` BOOLEAN NOT NULL , 
+            `reachable` TINYINT(1) NOT NULL , 
+            `on` TINYINT(1) NOT NULL , 
             `brightness` TINYINT(3) UNSIGNED , 
             `colormode` VARCHAR(64) NOT NULL , 
             `colortemp` SMALLINT NOT NULL , 
@@ -139,8 +139,8 @@ class Database(object):
         light_type = 'Dimmable light'
         name = light.name
         vendor_id = light.light_id
-        reachable = light.reachable
-        on_state = light.on
+        reachable = int(light.reachable)
+        on_state = int(light.on)
         brightness = light.brightness
 
         sql = """
@@ -156,8 +156,8 @@ class Database(object):
         light_type = 'Color temperature light'
         name = light.name
         vendor_id = light.light_id
-        reachable = light.reachable
-        on_state = light.on
+        reachable = int(light.reachable)
+        on_state = int(light.on)
         colormode = light.colormode
         brightness = light.brightness
         colortemp = light.colortemp
@@ -176,8 +176,8 @@ class Database(object):
         light_type = 'Extended color light'
         name = light.name
         vendor_id = light.light_id
-        reachable = light.reachable
-        on_state = light.on
+        reachable = int(light.reachable)
+        on_state = int(light.on)
         brightness = light.brightness
         colormode = light.colormode
         colortemp = light.colortemp
