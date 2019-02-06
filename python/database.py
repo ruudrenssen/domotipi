@@ -58,7 +58,7 @@ class Database(object):
             vendor_id = room.group_id
             name = room.name
             brightness = room.brightness
-            sql = """INSERT INTO rooms (name, vendor_id, hidden, brightness) VALUES ('%s', '%s', '%s', '%s')""" % (name, vendor_id, False, brightness)
+            sql = """INSERT INTO rooms (name, vendor_id, hidden, brightness) VALUES ('%s', '%s', '%s', '%s')""" % (name, vendor_id, 0, brightness)
             cursor.execute(sql)
         self.connection.commit()
         self.connection.close()
@@ -74,7 +74,7 @@ class Database(object):
                     ( `id` INT(3) NOT NULL AUTO_INCREMENT ,
                     `name` VARCHAR(32) NOT NULL , 
                     `vendor_id` INT NOT NULL ,  
-                    `hidden` BOOLEAN NOT NULL , 
+                    `hidden` TINYINT(1) NOT NULL , 
                     `brightness` TINYINT(3) UNSIGNED NOT NULL ,
                     PRIMARY KEY (`id`)) 
                     ENGINE = InnoDB; """
@@ -122,12 +122,12 @@ class Database(object):
             `reachable` TINYINT(1) NOT NULL , 
             `on` TINYINT(1) NOT NULL , 
             `brightness` TINYINT(3) UNSIGNED , 
-            `colormode` VARCHAR(64) NOT NULL , 
-            `colortemp` SMALLINT NOT NULL , 
-            `hue` SMALLINT(5) NOT NULL , 
+            `colormode` VARCHAR(64) , 
+            `colortemp` SMALLINT , 
+            `hue` SMALLINT(5) , 
             `saturation` TINYINT(3) UNSIGNED , 
-            `x_value` DECIMAL(6) NOT NULL , 
-            `y_value` DECIMAL(6) NOT NULL , 
+            `x_value` DECIMAL(6) , 
+            `y_value` DECIMAL(6) , 
             PRIMARY KEY (`id`)) 
             ENGINE = InnoDB; """
             cursor.execute(sql)
@@ -138,7 +138,7 @@ class Database(object):
         """ Philips Hue Dimmable Light """
         light_type = 'Dimmable light'
         name = light.name
-        vendor_id = light.light_id
+        vendor_id = light.light_id - 1
         reachable = int(light.reachable)
         on_state = int(light.on)
         brightness = light.brightness
@@ -155,18 +155,17 @@ class Database(object):
         """ Philips Hue Color Temperature Light """
         light_type = 'Color temperature light'
         name = light.name
-        vendor_id = light.light_id
+        vendor_id = light.light_id - 1
         reachable = int(light.reachable)
         on_state = int(light.on)
         colormode = light.colormode
         brightness = light.brightness
         colortemp = light.colortemp
 
-        sql = """
-                    INSERT INTO lights (
-                    `type`, `name`, `vendor_id`, `reachable`, `on`, `brightness`, `colormode`, `colortemp`) 
-                    VALUES (
-                    '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')""" \
+        sql = """INSERT INTO lights (
+            `type`, `name`, `vendor_id`, `reachable`, `on`, `brightness`, `colormode`, `colortemp`) 
+            VALUES (
+            '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')""" \
               % (light_type, name, vendor_id, reachable, on_state, brightness, colormode, colortemp)
         cursor.execute(sql)
 
@@ -175,7 +174,7 @@ class Database(object):
         """ Philips Hue Extended Color Light """
         light_type = 'Extended color light'
         name = light.name
-        vendor_id = light.light_id
+        vendor_id = light.light_id - 1
         reachable = int(light.reachable)
         on_state = int(light.on)
         brightness = light.brightness
