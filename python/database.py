@@ -17,8 +17,9 @@ class Database(object):
         self.password = config['MYSQL']['PASSWORD']
         self.database_name = 'domotipi'
 
+        self.open()
+
     def open(self):
-        """ Open MariaDB connection """
         try:
             self.set_connection()
         except mysql.connector.Error as err:
@@ -41,6 +42,27 @@ class Database(object):
                     self.set_connection()
             else:
                 print(err)
+
+    def config(self):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        sql = """CREATE TABLE IF NOT EXISTS `config` (
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `property` varchar(255) NOT NULL,
+            `value` varchar(255) NOT NULL,
+            PRIMARY KEY (`ID`))
+            ENGINE = InnoDB;"""
+        cursor.execute(sql)
+
+        sql = """ INSERT INTO `config` (property, value)
+            SELECT * FROM (SELECT 'default_room', 'def-room') AS tmp
+            WHERE NOT EXISTS (SELECT property FROM config WHERE property = `default_room`)"""
+        cursor.execute(sql)
+
+        self.connection.commit()
+        self.connection.close()
+        return 'replace with config'
+
 
     def rooms(self):
         """ Return all rooms """

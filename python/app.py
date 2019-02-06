@@ -14,7 +14,7 @@ lights = Lights()
 
 
 """ Prepare the database """
-db.open()
+config = db.config()
 lights.sync_lights(db, hue.lights)
 rooms.sync_rooms(db, hue.rooms)
 
@@ -22,8 +22,12 @@ rooms.sync_rooms(db, hue.rooms)
 @app.route('/')
 def index():
     """ Default route """
-    # todo: pass database object for rendering relevant controls
-    return render_template('index.jinja')
+    return redirect("/room/woonkamer", code=302)
+
+
+@app.route('/room/<room_name>')
+def room(room_name):
+    return render_template('room.jinja', name=room_name)
 
 
 @app.route('/all-lights')
