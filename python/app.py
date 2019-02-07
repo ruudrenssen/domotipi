@@ -17,7 +17,7 @@ scenes = Scenes()
 # Prepare database: populate tables
 lights.sync_lights(db, hue.lights)
 rooms.sync_rooms(db, hue.rooms)
-scenes.sync_scenes(db)
+scenes.sync_scenes(db, hue.bridge.get_scene())
 
 @app.route('/')
 def index():

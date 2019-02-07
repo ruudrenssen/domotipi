@@ -10,7 +10,6 @@ class Hue:
         ip = config['HUE']['IP_ADDRESS']
         user = config['HUE']['USER']
         self.bridge = Bridge(ip, user)
-        print(self.bridge.get_api())
 
         if self.connect_to_hue(self.bridge):
             self.rooms = self.bridge.groups

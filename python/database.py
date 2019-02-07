@@ -273,7 +273,7 @@ class Database(object):
 
         # Create rooms table if it doesn't already exist
         sql = """ CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_lights` (
-            `room_id` INT NOT NULL , 
+            `room_id` INT(3) NOT NULL  , 
             `light_id` INT NOT NULL ,
             PRIMARY KEY (`room_id`, `light_id`))
             ENGINE = InnoDB;"""
@@ -283,6 +283,7 @@ class Database(object):
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`scenes` (
             `id` INT(3) NOT NULL AUTO_INCREMENT ,
             `name` VARCHAR(32) NOT NULL ,
+            `room_id` INT(3) NOT NULL , 
             `table_name` INT(3) NOT NULL ,
             PRIMARY KEY (`id`))
             ENGINE = InnoDB;"""
