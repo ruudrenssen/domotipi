@@ -234,56 +234,56 @@ class Database(object):
     def create_tables(cursor):
         # Create config table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`config` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `property` varchar(255) NOT NULL,
-                    `value` varchar(255) NOT NULL,
-                    PRIMARY KEY (`ID`))
-                    ENGINE = InnoDB;"""
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `property` varchar(255) NOT NULL,
+            `value` varchar(255) NOT NULL,
+            PRIMARY KEY (`ID`))
+            ENGINE = InnoDB;"""
         cursor.execute(sql)
 
         # Create scenes table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`rooms` (
-                    `id` INT(3) NOT NULL AUTO_INCREMENT , 
-                    `name` VARCHAR(32) NOT NULL , 
-                    `vendor_id` INT NOT NULL ,  
-                    `hidden` BOOLEAN NOT NULL , 
-                    `brightness` TINYINT(3) UNSIGNED NOT NULL ,
-                    PRIMARY KEY (`id`)) 
-                    ENGINE = InnoDB;"""
+            `id` INT(3) NOT NULL AUTO_INCREMENT , 
+            `name` VARCHAR(32) NOT NULL , 
+            `vendor_id` INT NOT NULL ,  
+            `hidden` BOOLEAN NOT NULL , 
+            `brightness` TINYINT(3) UNSIGNED NOT NULL ,
+            PRIMARY KEY (`id`)) 
+            ENGINE = InnoDB;"""
         cursor.execute(sql)
 
         # Create lights table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`lights` (
-                    `id` INT(3) NOT NULL AUTO_INCREMENT , 
-                    `type` VARCHAR(64) NOT NULL , 
-                    `name` VARCHAR(32) NOT NULL , 
-                    `vendor_id` INT NOT NULL , 
-                    `reachable` TINYINT(1) NOT NULL , 
-                    `on` TINYINT(1) NOT NULL , 
-                    `brightness` TINYINT(3) UNSIGNED , 
-                    `colormode` VARCHAR(64) , 
-                    `colortemp` SMALLINT , 
-                    `hue` SMALLINT(5) , 
-                    `saturation` TINYINT(3) UNSIGNED , 
-                    `x_value` DECIMAL(6) , 
-                    `y_value` DECIMAL(6) , 
-                    PRIMARY KEY (`id`))
-                    ENGINE = InnoDB;"""
+            `id` INT(3) NOT NULL AUTO_INCREMENT , 
+            `type` VARCHAR(64) NOT NULL , 
+            `name` VARCHAR(32) NOT NULL , 
+            `vendor_id` INT NOT NULL , 
+            `reachable` TINYINT(1) NOT NULL , 
+            `on` TINYINT(1) NOT NULL , 
+            `brightness` TINYINT(3) UNSIGNED , 
+            `colormode` VARCHAR(64) , 
+            `colortemp` SMALLINT , 
+            `hue` SMALLINT(5) , 
+            `saturation` TINYINT(3) UNSIGNED , 
+            `x_value` DECIMAL(6) , 
+            `y_value` DECIMAL(6) , 
+            PRIMARY KEY (`id`))
+            ENGINE = InnoDB;"""
         cursor.execute(sql)
 
         # Create rooms table if it doesn't already exist
         sql = """ CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_lights` (
-                    `room_id` INT NOT NULL , 
-                    `light_id` INT NOT NULL ,
-                    PRIMARY KEY (`room_id`, `light_id`))
-                    ENGINE = InnoDB;"""
+            `room_id` INT NOT NULL , 
+            `light_id` INT NOT NULL ,
+            PRIMARY KEY (`room_id`, `light_id`))
+            ENGINE = InnoDB;"""
         cursor.execute(sql)
 
         # Create scenes table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`scenes` (
-                    `id` INT(3) NOT NULL AUTO_INCREMENT ,
-                    `name` VARCHAR(32) NOT NULL ,
-                    `table_name` INT(3) NOT NULL ,
-                    PRIMARY KEY (`id`))
-                    ENGINE = InnoDB;"""
+            `id` INT(3) NOT NULL AUTO_INCREMENT ,
+            `name` VARCHAR(32) NOT NULL ,
+            `table_name` INT(3) NOT NULL ,
+            PRIMARY KEY (`id`))
+            ENGINE = InnoDB;"""
         cursor.execute(sql)

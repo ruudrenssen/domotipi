@@ -4,6 +4,7 @@ IP_ADDRESS = 127.0.0.1
 
 [HUE]
 IP_ADDRESS = 127.0.0.1
+USER = hueKey
 
 [MYSQL]
 HOST = localhost

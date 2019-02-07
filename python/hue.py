@@ -8,8 +8,9 @@ class Hue:
         config = configparser.ConfigParser()
         config.read('config.ini')
         ip = config['HUE']['IP_ADDRESS']
-
-        self.bridge = Bridge(ip)
+        user = config['HUE']['USER']
+        self.bridge = Bridge(ip, user)
+        print(self.bridge.get_api())
 
         if self.connect_to_hue(self.bridge):
             self.rooms = self.bridge.groups
