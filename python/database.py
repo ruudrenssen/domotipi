@@ -230,12 +230,6 @@ class Database(object):
         self.connection.commit()
         self.connection.close()
 
-    def reset_scenes_table(self):
-        self.connection.connect()
-        cursor = self.connection.cursor()
-        cursor.execute("TRUNCATE TABLE scenes")
-        self.connection.close()
-
     @staticmethod
     def create_tables(cursor):
         # Create config table if it doesn't already exist
@@ -244,6 +238,17 @@ class Database(object):
                     `property` varchar(255) NOT NULL,
                     `value` varchar(255) NOT NULL,
                     PRIMARY KEY (`ID`))
+                    ENGINE = InnoDB;"""
+        cursor.execute(sql)
+
+        # Create scenes table if it doesn't already exist
+        sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`rooms` (
+                    `id` INT(3) NOT NULL AUTO_INCREMENT , 
+                    `name` VARCHAR(32) NOT NULL , 
+                    `vendor_id` INT NOT NULL ,  
+                    `hidden` BOOLEAN NOT NULL , 
+                    `brightness` TINYINT(3) UNSIGNED NOT NULL ,
+                    PRIMARY KEY (`id`)) 
                     ENGINE = InnoDB;"""
         cursor.execute(sql)
 

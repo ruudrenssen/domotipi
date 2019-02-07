@@ -1,8 +1,8 @@
 class Scenes:
     scenes = []
 
-    def sync_scenes(self, database):
-        database.reset_scenes_table()
+    def sync_scenes(self, db):
+        print(db)
 
 class Scene:
     name = ''
