@@ -5,7 +5,7 @@ class Lights:
         """ Sync vendor information with database """
         database.reset_lights_table()
         database.add_lights(lights)
-        for result in database.lights():
+        for result in database.get_lights():
             # create new Light instance and pass the phue light object as parameter
             light = Light(lights[result[3]], result)
             self.lights.append(light)

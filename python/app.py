@@ -4,6 +4,7 @@ from hue import Hue
 from database import Database
 from rooms import Rooms
 from lights import Lights
+from scenes import Scenes
 
 app = Flask(__name__)
 hue = Hue()
@@ -11,24 +12,24 @@ kodi = KodiRemote()
 db = Database()
 rooms = Rooms()
 lights = Lights()
+scenes = Scenes()
 
-
-""" Prepare the database """
-config = db.config()
+# Prepare database: populate tables
 lights.sync_lights(db, hue.lights)
 rooms.sync_rooms(db, hue.rooms)
-
+scenes.sync_scenes(db)
 
 @app.route('/')
 def index():
     """ Default route """
+    config = db.config_database()
     return redirect("/room/" + config[0][2], code=302)
 
 
 @app.route('/room/<room_id>')
 def room(room_id):
     """ Route for room """
-    return render_template('room.jinja', name=room_id, lights_room=db.all_lights_from_room(room_id))
+    return render_template('room.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
 
 
 @app.route('/all-lights')
@@ -49,8 +50,9 @@ def hue_light_info():
 def kodi_action():
     """ Handle Kodi media player commands """
     form = request.form
-    getattr(kodi, form['kodi_action'])()
-    return redirect("/", code=302)
+    url = request.referrer
+    getattr(kodi, form['kodi_action'])(kodi)
+    return redirect(url, code=302)
 
 
 """ Run the app """

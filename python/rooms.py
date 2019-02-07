@@ -5,7 +5,7 @@ class Rooms:
         # Sync vendor information with database
         database.reset_rooms_table()
         database.add_rooms(groups)
-        for result in database.rooms():
+        for result in database.get_rooms():
             # Create new room object for each room, add lights based on vendor_id and add the room to the rooms object
             room = Room(result[0], result[1], result[2])
             room.sync_lights(database, groups[result[2]-1].lights)

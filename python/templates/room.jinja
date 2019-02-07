@@ -1,8 +1,18 @@
 {% extends 'layout.jinja' %}
 
 {% block body %}
-<h1>{{ name }}</h1>
-{% for light in lights_room %}
-{{ light }}
-{% endfor %}
+    <h1>{{ room[0][1] }}</h1>
+
+    <h2>Scenes</h2>
+    <form>
+    </form>
+
+    <h2>Media controls</h2>
+    <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote">
+        <button name="kodi_action" value="playpause">Play / pause</button>
+        <button name="kodi_action" value="up">Up</button>
+        <button name="kodi_action" value="down">Down</button>
+        <button name="kodi_action" value="left">Left</button>
+        <button name="kodi_action" value="right">Right</button>
+    </form>
 {% endblock %}

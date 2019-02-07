@@ -17,9 +17,11 @@ class Database(object):
         self.password = config['MYSQL']['PASSWORD']
         self.database_name = 'domotipi'
 
-        self.open()
+        # Initialize database
+        self.open_database()
+        self.create_tables(self.connection.cursor())
 
-    def open(self):
+    def open_database(self):
         try:
             self.set_connection()
         except mysql.connector.Error as err:
@@ -43,20 +45,18 @@ class Database(object):
             else:
                 print(err)
 
-    def config(self):
+    def set_connection(self):
+        self.connection = mysql.connector.connect(
+            host=self.host,
+            user=self.user,
+            password=self.password,
+            database=self.database_name)
+
+    def config_database(self):
         self.connection.connect()
         cursor = self.connection.cursor()
 
-        # Create config table if it doesn't already exist
-        sql = """CREATE TABLE IF NOT EXISTS `config` (
-            `ID` int(11) NOT NULL AUTO_INCREMENT,
-            `property` varchar(255) NOT NULL,
-            `value` varchar(255) NOT NULL,
-            PRIMARY KEY (`ID`))
-            ENGINE = InnoDB;"""
-        cursor.execute(sql)
-
-        # Pick first room from DB and set as default
+        # Pick first room from DB if default_room does not exist and set is as default_room
         sql = """SELECT id FROM rooms"""
         cursor.execute(sql)
         default_room = cursor.fetchall()
@@ -65,6 +65,7 @@ class Database(object):
             WHERE NOT EXISTS (SELECT property FROM config WHERE property = `default_room`)""" % default_room[0][0]
         cursor.execute(sql)
 
+        # Query config table for return
         sql = """ SELECT * FROM config """
         cursor.execute(sql)
         config = cursor.fetchall()
@@ -72,8 +73,7 @@ class Database(object):
         self.connection.close()
         return config
 
-
-    def rooms(self):
+    def get_rooms(self):
         """ Return all rooms """
         self.connection.connect()
         cursor = self.connection.cursor()
@@ -94,25 +94,23 @@ class Database(object):
         self.connection.commit()
         self.connection.close()
 
+    def get_room(self, room_id):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        sql = """SELECT * FROM rooms WHERE id='%s'""" % room_id
+        cursor.execute(sql)
+        room = cursor.fetchall()
+        self.connection.commit()
+        self.connection.close()
+        return room
+
     def reset_rooms_table(self):
         self.connection.connect()
         cursor = self.connection.cursor()
-        try:
-            cursor.execute("TRUNCATE TABLE rooms")
-        except mysql.connector.Error as err:
-            # create new table for rooms
-            sql = """ CREATE TABLE `domotipi`.`rooms` 
-                    ( `id` INT(3) NOT NULL AUTO_INCREMENT ,
-                    `name` VARCHAR(32) NOT NULL , 
-                    `vendor_id` INT NOT NULL ,  
-                    `hidden` TINYINT(1) NOT NULL , 
-                    `brightness` TINYINT(3) UNSIGNED NOT NULL ,
-                    PRIMARY KEY (`id`)) 
-                    ENGINE = InnoDB; """
-            cursor.execute(sql)
+        cursor.execute("TRUNCATE TABLE rooms")
         self.connection.close()
 
-    def lights(self):
+    def get_lights(self):
         # Return all lights
         self.connection.connect()
         cursor = self.connection.cursor()
@@ -141,27 +139,7 @@ class Database(object):
     def reset_lights_table(self):
         self.connection.connect()
         cursor = self.connection.cursor()
-        try:
-            cursor.execute("TRUNCATE TABLE lights")
-        except mysql.connector.Error as err:
-            # create new lights table
-            sql = """CREATE TABLE `domotipi`.`lights` 
-            ( `id` INT(3) NOT NULL AUTO_INCREMENT , 
-            `type` VARCHAR(64) NOT NULL , 
-            `name` VARCHAR(32) NOT NULL , 
-            `vendor_id` INT NOT NULL , 
-            `reachable` TINYINT(1) NOT NULL , 
-            `on` TINYINT(1) NOT NULL , 
-            `brightness` TINYINT(3) UNSIGNED , 
-            `colormode` VARCHAR(64) , 
-            `colortemp` SMALLINT , 
-            `hue` SMALLINT(5) , 
-            `saturation` TINYINT(3) UNSIGNED , 
-            `x_value` DECIMAL(6) , 
-            `y_value` DECIMAL(6) , 
-            PRIMARY KEY (`id`)) 
-            ENGINE = InnoDB; """
-            cursor.execute(sql)
+        cursor.execute("TRUNCATE TABLE lights")
         self.connection.close()
 
     @staticmethod
@@ -229,11 +207,7 @@ class Database(object):
     def add_light_to_room(self, light_id, room_id):
         self.connection.connect()
         cursor = self.connection.cursor()
-        sql = """
-        INSERT INTO rooms_lights
-        (room_id, light_id)
-        VALUES ('%s', '%s')
-        """ % (room_id, light_id)
+        sql = """ INSERT INTO rooms_lights (room_id, light_id) VALUES ('%s', '%s') """ % (room_id, light_id)
         cursor.execute(sql)
         self.connection.commit()
         self.connection.close()
@@ -241,40 +215,70 @@ class Database(object):
     def all_lights_from_room(self, room_id):
         self.connection.connect()
         cursor = self.connection.cursor()
-        sql = """
-                SELECT * FROM lights INNER JOIN rooms_lights ON lights.id=rooms_lights.light_id WHERE room_id='%s'
+        sql = """SELECT * FROM lights INNER JOIN rooms_lights ON lights.id=rooms_lights.light_id WHERE room_id='%s'
                 """ % room_id
-        try:
-            cursor.execute(sql)
-            lights = cursor.fetchall()
-            self.connection.close()
-            return lights
-        except mysql.connector.Error as err:
-            print(err)
-            self.connection.close()
+        cursor.execute(sql)
+        lights = cursor.fetchall()
+        self.connection.close()
+        return lights
 
     def remove_all_lights_from_room(self, room_id):
         self.connection.connect()
         cursor = self.connection.cursor()
-        sql = """
-                DELETE FROM rooms_lights WHERE room_id='%s'
-                """ % room_id
-        try:
-            cursor.execute(sql)
-        except mysql.connector.Error as err:
-            # create new table for rooms
-            sql = """CREATE TABLE `domotipi`.`rooms_lights` 
-                            (`room_id` INT NOT NULL , 
-                            `light_id` INT NOT NULL ,
-                            PRIMARY KEY (`room_id`, `light_id`)) 
-                            ENGINE = InnoDB;"""
-            cursor.execute(sql)
+        sql = """DELETE FROM rooms_lights WHERE room_id='%s'""" % room_id
+        cursor.execute(sql)
         self.connection.commit()
         self.connection.close()
 
-    def set_connection(self):
-        self.connection = mysql.connector.connect(
-            host=self.host,
-            user=self.user,
-            password=self.password,
-            database=self.database_name)
+    def reset_scenes_table(self):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        cursor.execute("TRUNCATE TABLE scenes")
+        self.connection.close()
+
+    @staticmethod
+    def create_tables(cursor):
+        # Create config table if it doesn't already exist
+        sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`config` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `property` varchar(255) NOT NULL,
+                    `value` varchar(255) NOT NULL,
+                    PRIMARY KEY (`ID`))
+                    ENGINE = InnoDB;"""
+        cursor.execute(sql)
+
+        # Create lights table if it doesn't already exist
+        sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`lights` (
+                    `id` INT(3) NOT NULL AUTO_INCREMENT , 
+                    `type` VARCHAR(64) NOT NULL , 
+                    `name` VARCHAR(32) NOT NULL , 
+                    `vendor_id` INT NOT NULL , 
+                    `reachable` TINYINT(1) NOT NULL , 
+                    `on` TINYINT(1) NOT NULL , 
+                    `brightness` TINYINT(3) UNSIGNED , 
+                    `colormode` VARCHAR(64) , 
+                    `colortemp` SMALLINT , 
+                    `hue` SMALLINT(5) , 
+                    `saturation` TINYINT(3) UNSIGNED , 
+                    `x_value` DECIMAL(6) , 
+                    `y_value` DECIMAL(6) , 
+                    PRIMARY KEY (`id`))
+                    ENGINE = InnoDB;"""
+        cursor.execute(sql)
+
+        # Create rooms table if it doesn't already exist
+        sql = """ CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_lights` (
+                    `room_id` INT NOT NULL , 
+                    `light_id` INT NOT NULL ,
+                    PRIMARY KEY (`room_id`, `light_id`))
+                    ENGINE = InnoDB;"""
+        cursor.execute(sql)
+
+        # Create scenes table if it doesn't already exist
+        sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`scenes` (
+                    `id` INT(3) NOT NULL AUTO_INCREMENT ,
+                    `name` VARCHAR(32) NOT NULL ,
+                    `table_name` INT(3) NOT NULL ,
+                    PRIMARY KEY (`id`))
+                    ENGINE = InnoDB;"""
+        cursor.execute(sql)

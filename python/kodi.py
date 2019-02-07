@@ -7,49 +7,40 @@ class KodiRemote():
         config = configparser.ConfigParser()
         config.read('config.ini')
         ip = config['KODI']['IP_ADDRESS']
-        kodi = self.check_connection(ip)
-        if kodi:
+        self.kodi = self.check_connection(ip)
+        if self.kodi:
             print('connected to kodi')
         else:
             print('could not connect to kodi')
 
-    @staticmethod
-    def check_connection(ip):
-        kodi = Kodi('http://' + ip + '/jsonrpc')
+    def check_connection(self, ip):
+        self.kodi = Kodi('http://' + ip + '/jsonrpc')
         try:
-            kodi.JSONRPC.Ping()
-            return kodi
+            self.kodi.JSONRPC.Ping()
+            return self.kodi
         except:
             return False
 
-    @staticmethod
-    def get_movies(kodi):
-        kodi.VideoLibrary.GetMovies()
+    def get_movies(self, kodi):
+        self.kodi.VideoLibrary.GetMovies()
 
-    @staticmethod
-    def left(kodi):
-        kodi.Input.Left()
+    def left(self, kodi):
+        self.kodi.Input.Left()
 
-    @staticmethod
-    def right(kodi):
-         kodi.Input.Right()
+    def right(self, kodi):
+        self.kodi.Input.Right()
 
-    @staticmethod
-    def up(kodi):
-        kodi.Input.Up()
+    def up(self, kodi):
+        self.kodi.Input.Up()
 
-    @staticmethod
-    def down(kodi):
-        kodi.Input.Down()
+    def down(self, kodi):
+        self.kodi.Input.Down()
 
-    @staticmethod
-    def back(kodi):
-        kodi.Input.Back()
+    def back(self, kodi):
+        self.kodi.Input.Back()
 
-    @staticmethod
-    def info(kodi):
-        kodi.Input.Info()
+    def info(self, kodi):
+        self.kodi.Input.Info()
 
-    @staticmethod
-    def playpause(kodi):
-        kodi.Player.PlayPause([PLAYER_VIDEO])
+    def playpause(self, kodi):
+        self.kodi.Player.PlayPause([PLAYER_VIDEO])
