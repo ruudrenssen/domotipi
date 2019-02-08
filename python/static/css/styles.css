@@ -1,9 +1,10 @@
 :root {
     --gutter: 1rem;
-    --small-gutter: 0.5rem;
+    --small-gutter: 0.66rem;
+    --tiny-gutter: 0.33rem;
 
-    --color-foreground: #EFEFEF;
-    --color-background: #212121;
+    --color-foreground: #212121;
+    --color-background: #EFEFEF;
     --color-muted: #565656;
 
     --border-width: 2px;
@@ -16,6 +17,11 @@
 
 }
 
+::placeholder {
+    color: var(--color-foreground);
+    opacity: 0.25;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -24,18 +30,24 @@ html, body {
 
     font-family: var(--font-family);
     line-height: 1.25;
+    background: var(--color-background);
     color: var(--color-foreground);
-
-    background-color: var(--color-background);
+}
+main {
+    padding: var(--gutter);
 }
 
 h1, h2, h3, label {
-    font-size: 0.675rem;
+    font-size: 0.625rem;
     text-transform: uppercase;
+    color: var(--color-foreground);
     opacity: 0.5;
+    font-weight: 800;
+    margin: 0 0 var(--tiny-gutter) 0;
 }
 
 button, input {
+    padding: var(--tiny-gutter) 0;
     font: var(--font);
     color: var(--color-foreground);
     background: transparent;
@@ -50,31 +62,78 @@ button:hover {
 input {
     display: block;
     line-height: 2;
+    color: var(--color-foreground);
 }
 
-.remote {
-    display: grid;
-    grid-template-rows: 1fr min-content 1fr;
-    grid-template-columns: 1fr;
-    height: 100%;
+.box {
+    padding: var(--gutter);
+}
+
+.dark-box {
+    --color-foreground: #EFEFEF;
+    --color-background: #212121;
+    color: var(--color-foreground);
+    background-color: var(--color-background);
+
+    padding: var(--gutter);
+}
+
+.info-button {
+    position: absolute;
+    right: 0;
+    top: calc(50% - var(--gutter));
 }
 
 .media-remote {
     display: grid;
-    grid-template-rows: 3fr 5fr 3fr;
+    grid-template-rows: 1fr 3fr 1fr;
     grid-template-columns: 6fr 2fr;
-    height: 100%;
 }
 
 .media-remote__search {
+    position: relative;
     grid-row: 1 / 2;
     grid-column: 1 / 3;
     align-items: center;
 }
 
+.media-remote__controls {
+    display: grid;
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    margin: var(--gutter) 0;
+}
+
+.media-remote__volume {
+    display: flex;
+    flex-direction: column;
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    height: 100%;
+}
+
+.media-remote__info {
+    position: relative;
+    grid-row: 3 / 4;
+    grid-column: 1 / 3;
+}
+
+.remote {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: 1fr;
+}
+
 .search {
     display: block;
-    position: relative;
+    position: absolute;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
 }
 
@@ -86,43 +145,42 @@ input {
     left: 0;
     width: 100%;
     height: 100%;
-
-    padding: 0 var(--gutter);
 }
 
 .search__button {
     position: absolute;
     width: 2rem;
     height: 2rem;
-    right: var(--gutter);
+    right: 0;
     top: calc(50% - var(--gutter));
 }
 
-.media-remote__controls {
-    display: grid;
-    grid-row: 2 / 3;
-    grid-column: 1 / 2;
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-columns: repeat(3, 1fr);
+.tab {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: var(--small-gutter);
+    font-size: 0.625rem;
+    text-transform: uppercase;
 }
 
-.media-remote__volume {
+.tab.is-active {
+    background: var(--color-foreground);
+}
+
+.tab.is-active a {
+    color: var(--color-background);
+}
+
+.tab a {
+    text-decoration: none;
+    color: var(--color-foreground);
+}
+
+.tabs {
     display: flex;
-    flex-direction: column;
-    grid-row: 2 / 3;
-    grid-column: 2 / 3;
-    height: 100%;
-}
-
-.volume-control {
-    flex: 1 0 auto;
-}
-
-.media-remote__info {
-    grid-row: 3 / 4;
-    grid-column: 1 / 3;
-
-    padding: var(--gutter);
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
 .visually-hidden {
@@ -131,4 +189,8 @@ input {
     clip: rect(0 0 0 0);
     height: 1px; width: 1px;
     margin: -1px; padding: 0; border: 0;
+}
+
+.volume-control {
+    flex: 1 0 auto;
 }

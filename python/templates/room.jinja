@@ -6,13 +6,11 @@
 
         {% block top_controls %}
             <h1 class="visually-hidden">Media controls</h1>
-            <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote" class="media-remote">
+            <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote" class="dark-box media-remote">
                 <div class="media-remote__search">
-                    <label class="search">
-                        <span class="visually-hidden">Search:</span>
-                        <input type="text" placeholder="Pulp Fiction, Sopranos, Alt-J" class="search__input">
-                        <input type="submit" value="🔍" class="search__button">
-                    </label>
+                    <label class="search">Search</label>
+                    <input type="text" placeholder="Pulp Fiction, Sopranos, Alt-J" class="search__input">
+                    <input type="submit" value="🔍" class="search__button">
                 </div>
                 <div class="media-remote__controls">
                     <button name="kodi_action" value="stop">■</button>
@@ -31,8 +29,8 @@
                 </div>
                 <div class="media-remote__info">
                     <h2>Currently playing</h2>
-                    {{ media.current_item }}
-                    <button name="kodi_action" value="info">info</button
+                    <div>{{ media.current_item }}</div>
+                    <button name="kodi_action" value="info" class="info-button">ℹ</button>
                 </div>
             </form>
         {% endblock %}
@@ -40,11 +38,11 @@
     </section>
 
     <ol class="tabs">
-        <li><a href="" class="is-active">Media player</a></li>
-        <li><a href="">Lights</a></li>
+        <li class="tab is-active"><a href="#">Media player</a></li>
+        <li class="tab"><a href="#">Lights</a></li>
     </ol>
 
-    <section class="bottom-controls">
+    <section class="bottom-controls box">
 
         {% block bottom_controls %}
             <h2>Scenes</h2>
