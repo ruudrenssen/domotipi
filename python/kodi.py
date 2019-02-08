@@ -17,8 +17,13 @@ class KodiRemote():
         else:
             print('could not connect to kodi')
 
-        self.properties['current_item'] = self.kodi.Player.GetItem([PLAYER_VIDEO])['result']['item']['label']
-        print(self.properties['current_item'])
+        self.update()
+
+    def update(self):
+        playing = self.kodi.Player.GetItem([PLAYER_VIDEO])['result']['item']['label']
+        if playing == '':
+            playing = 'nothing is playing'
+        self.properties['current_item'] = playing
 
     def check_connection(self, ip):
         self.kodi = Kodi('http://' + ip + '/jsonrpc')
@@ -28,35 +33,38 @@ class KodiRemote():
         except:
             return False
 
-    def get_movies(self, kodi):
+    def get_movies(self):
         self.kodi.VideoLibrary.GetMovies()
 
-    def left(self, kodi):
+    def left(self):
         self.kodi.Input.Left()
 
-    def right(self, kodi):
+    def right(self):
         self.kodi.Input.Right()
 
-    def up(self, kodi):
+    def up(self):
         self.kodi.Input.Up()
 
-    def down(self, kodi):
+    def down(self):
         self.kodi.Input.Down()
 
-    def back(self, kodi):
+    def back(self):
         self.kodi.Input.Back()
 
-    def info(self, kodi):
+    def info(self):
         self.kodi.Input.Info()
 
-    def select(self, kodi):
+    def select(self):
         self.kodi.Input.Select()
 
-    def volume_up(self, kodi):
+    def volume_up(self):
         pass
 
-    def volume_down(self, kodi):
+    def volume_down(self):
         pass
 
-    def playpause(self, kodi):
+    def playpause(self):
         self.kodi.Player.PlayPause([PLAYER_VIDEO])
+
+    def stop(self):
+        self.kodi.Player.Stop([PLAYER_VIDEO])

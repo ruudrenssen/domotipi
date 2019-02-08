@@ -31,6 +31,7 @@ def index():
 @app.route('/room/<room_id>')
 def room(room_id):
     """ Route for room """
+    kodi.update()
     return render_template('room.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id), media=kodi.properties)
 
 
@@ -63,7 +64,7 @@ def kodi_action():
     """ Handle Kodi media player commands """
     form = request.form
     url = request.referrer
-    getattr(kodi, form['kodi_action'])(kodi)
+    getattr(kodi, form['kodi_action'])()
     return redirect(url, code=302)
 
 
