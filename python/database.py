@@ -271,11 +271,31 @@ class Database(object):
             ENGINE = InnoDB;"""
         cursor.execute(sql)
 
+        # Create scenes table if it doesn't already exist
+        sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`players` (
+            `id` INT(3) NOT NULL AUTO_INCREMENT , 
+            `name` VARCHAR(32) NOT NULL , 
+            `type` VARCHAR(32) NOT NULL ,
+            `ip` VARCHAR(15) NOT NULL ,  
+            `username` VARCHAR(32),
+            `password` VARCHAR(32),
+            PRIMARY KEY (`id`)) 
+            ENGINE = InnoDB;"""
+        cursor.execute(sql)
+
         # Create rooms table if it doesn't already exist
-        sql = """ CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_lights` (
+        sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_lights` (
             `room_id` INT(3) NOT NULL  , 
             `light_id` INT NOT NULL ,
             PRIMARY KEY (`room_id`, `light_id`))
+            ENGINE = InnoDB;"""
+        cursor.execute(sql)
+
+        # Create rooms table if it doesn't already exist
+        sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_players` (
+            `room_id` INT(3) NOT NULL  , 
+            `player_id` INT NOT NULL ,
+            PRIMARY KEY (`room_id`, `player_id`))
             ENGINE = InnoDB;"""
         cursor.execute(sql)
 

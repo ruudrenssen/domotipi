@@ -1,10 +1,8 @@
 class Scenes:
     scenes = []
 
-    def sync_scenes(self, db, scenes):
-        print(db)
-
-        print(scenes)
+    def initialize_scenes(self, db):
+        pass
 
 class Scene:
     scene_id = ''

@@ -17,7 +17,9 @@ scenes = Scenes()
 # Prepare database: populate tables
 lights.sync_lights(db, hue.lights)
 rooms.sync_rooms(db, hue.rooms)
-scenes.sync_scenes(db, hue.bridge.get_scene())
+
+# setup scenes
+scenes.initialize_scenes(db)
 
 @app.route('/')
 def index():
@@ -31,6 +33,16 @@ def room(room_id):
     """ Route for room """
     return render_template('room.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
 
+
+@app.route('/room/<room_id>/lights')
+def lights(room_id):
+    """ Route for room """
+    return render_template('lights.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
+
+@app.route('/room/<room_id>/save-as-scene')
+def save_scene(room_id):
+    """ Route for room """
+    return render_template('save-scene.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
 
 @app.route('/all-lights')
 def all_lights():

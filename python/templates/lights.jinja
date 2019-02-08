@@ -1,41 +1,13 @@
-{% extends 'layout.jinja' %}
+{% extends 'room.jinja' %}
 
-{% block body %}
-<h1>DOMOTIPI REMOTE</h1>
-<p>A lightweight web page that acts as remote control for Phillips Hue and Kodi media center.</p>
-<h2>Kodi</h2>
-
-<form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote">
-    <button name="kodi_action" value="playpause">Play / pause</button>
-    <button name="kodi_action" value="up">Up</button>
-    <button name="kodi_action" value="down">Down</button>
-    <button name="kodi_action" value="left">Left</button>
-    <button name="kodi_action" value="right">Right</button>
-</form>
-
-<h2>Hue</h2>
-<div class="lights">
+{% block top_controls %}
+    <h2>Lights</h2>
     {% for light in lights %}
-    <div class="light">
-        {% include 'partials/light-form.jinja' %}
-
-        {% if light.type == 'Dimmable light' %}
-            {% include 'partials/dimm-light-form.jinja' %}
-        {% elif light.type == 'Color temperature light' %}
-            {% include 'partials/dimm-light-form.jinja' %}
-            {% include 'partials/color-temp-form.jinja' %}
-        {% elif light.type == 'Extended color light' %}
-            {% include 'partials/dimm-light-form.jinja' %}
-            {% include 'partials/color-mode-form.jinja' %}
-            {% if light.colormode == 'xy' %}
-                {% include 'partials/xy-form.jinja' %}
-            {% elif light.colormode == 'ct' %}
-                {% include 'partials/color-temp-form.jinja' %}
-            {% elif light.colormode == 'hs' %}
-                {% include 'partials/hue-form.jinja' %}
-            {% endif %}
-        {% endif %}
-    </div>
+        <h3>{{ light[2] }}</h3>
+        <div>id: {{light[0] }}</div>
+        <div>type: {{ light[1] }}</div>
+        <div>color mode: {{ light[7] }}</div>
+        {{light}}
     {% endfor %}
-</div>
+    <div><a href="/room/{{ room[0][0] }}/save-as-scene">Save as scene</a></div>
 {% endblock %}
