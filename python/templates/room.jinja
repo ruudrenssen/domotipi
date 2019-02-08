@@ -1,17 +1,38 @@
 {% extends 'layout.jinja' %}
 
 {% block app %}
-    <h1>{{ room[0][1] }}</h1>
+    <h2 class="visually-hidden">{{ room[0][1] }}</h2>
     <section class="top-controls">
 
         {% block top_controls %}
-            <h2>Media controls</h2>
-            <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote">
-                <button name="kodi_action" value="playpause">►❚❚</button>
-                <button name="kodi_action" value="up">▲</button>
-                <button name="kodi_action" value="down">▼</button>
-                <button name="kodi_action" value="left">◀</button>
-                <button name="kodi_action" value="right">▶</button>
+            <h1 class="visually-hidden">Media controls</h1>
+            <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote" class="media-remote">
+                <div class="media-remote__search">
+                    <label class="search">
+                        <span class="visually-hidden">Search:</span>
+                        <input type="text" placeholder="Pulp Fiction, Sopranos, Alt-J" class="search__input">
+                        <input type="submit" value="🔍" class="search__button">
+                    </label>
+                </div>
+                <div class="media-remote__controls">
+                    <button name="kodi_action" value="stop">■</button>
+                    <button name="kodi_action" value="up">▲</button>
+                    <button name="kodi_action" value="playpause">❚❚</button>
+                    <button name="kodi_action" value="left">◀</button>
+                    <button name="kodi_action" value="select">⤶</button>
+                    <button name="kodi_action" value="right">▶</button>
+                    <button name="kodi_action" value="options">o</button>
+                    <button name="kodi_action" value="down">▼</button>
+                    <button name="kodi_action" value="back">↶</button>
+                </div>
+                <div class="media-remote__volume">
+                    <button name="kodi_action" value="volume_up" class="volume-control">+</button>
+                    <button name="kodi_action" value="volume_down" class="volume-control">-</button>
+                </div>
+                <div class="media-remote__info">
+                    currently playing (if anything)
+                    <button name="kodi_action" value="info">info</button
+                </div>
             </form>
         {% endblock %}
 

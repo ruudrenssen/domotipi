@@ -42,5 +42,14 @@ class KodiRemote():
     def info(self, kodi):
         self.kodi.Input.Info()
 
+    def select(self, kodi):
+        self.kodi.Input.Select()
+
+    def volume_up(self, kodi):
+        pass
+
+    def volume_down(self, kodi):
+        pass
+
     def playpause(self, kodi):
         self.kodi.Player.PlayPause([PLAYER_VIDEO])
