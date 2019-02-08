@@ -3,6 +3,10 @@ from kodijson import Kodi, PLAYER_VIDEO
 
 
 class KodiRemote():
+    properties = {
+        'current_item': ''
+    }
+
     def __init__(self):
         config = configparser.ConfigParser()
         config.read('config.ini')
@@ -12,6 +16,9 @@ class KodiRemote():
             print('connected to kodi')
         else:
             print('could not connect to kodi')
+
+        self.properties['current_item'] = self.kodi.Player.GetItem([PLAYER_VIDEO])['result']['item']['label']
+        print(self.properties['current_item'])
 
     def check_connection(self, ip):
         self.kodi = Kodi('http://' + ip + '/jsonrpc')

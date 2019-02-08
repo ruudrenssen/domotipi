@@ -29,6 +29,12 @@ html, body {
     background-color: var(--color-background);
 }
 
+h1, h2, h3, label {
+    font-size: 0.675rem;
+    text-transform: uppercase;
+    opacity: 0.5;
+}
+
 button, input {
     font: var(--font);
     color: var(--color-foreground);
@@ -48,14 +54,14 @@ input {
 
 .remote {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr min-content 1fr;
     grid-template-columns: 1fr;
     height: 100%;
 }
 
 .media-remote {
     display: grid;
-    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-rows: 3fr 5fr 3fr;
     grid-template-columns: 6fr 2fr;
     height: 100%;
 }

@@ -31,7 +31,7 @@ def index():
 @app.route('/room/<room_id>')
 def room(room_id):
     """ Route for room """
-    return render_template('room.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
+    return render_template('room.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id), media=kodi.properties)
 
 
 @app.route('/room/<room_id>/lights')

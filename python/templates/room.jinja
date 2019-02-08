@@ -30,13 +30,19 @@
                     <button name="kodi_action" value="volume_down" class="volume-control">-</button>
                 </div>
                 <div class="media-remote__info">
-                    currently playing (if anything)
+                    <h2>Currently playing</h2>
+                    {{ media.current_item }}
                     <button name="kodi_action" value="info">info</button
                 </div>
             </form>
         {% endblock %}
 
     </section>
+
+    <ol class="tabs">
+        <li><a href="" class="is-active">Media player</a></li>
+        <li><a href="">Lights</a></li>
+    </ol>
 
     <section class="bottom-controls">
 
