@@ -11,6 +11,9 @@ class Rooms:
             room.sync_lights(database, groups[result[2]-1].lights)
             self.rooms.append(room)
 
+    def get_rooms(self):
+        return self.rooms
+
 
 class Room:
     # Room properties
@@ -39,6 +42,9 @@ class Room:
         for light in lights:
             database.add_light_to_room(light.light_id, self.room_id)
             self.lights.append(light)
+
+    def get_lights(self):
+        return self.lights
 
     def dim_room(self):
         pass

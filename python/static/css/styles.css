@@ -177,7 +177,8 @@ input {
 }
 
 .tabs {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(100px, 1fr) );
     padding: 0;
     margin: 0;
     list-style: none;
@@ -193,4 +194,8 @@ input {
 
 .volume-control {
     flex: 1 0 auto;
+}
+
+.text-center {
+    text-align: center;
 }

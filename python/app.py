@@ -19,7 +19,7 @@ lights.sync_lights(db, hue.lights)
 rooms.sync_rooms(db, hue.rooms)
 
 # setup scenes
-scenes.initialize_scenes(db)
+scenes.initialize_scenes(rooms.get_rooms())
 
 @app.route('/')
 def index():
