@@ -44,10 +44,12 @@ def lights(room_id):
     """ Route for room """
     return render_template('lights.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
 
+
 @app.route('/room/<room_id>/save-as-scene')
 def save_scene(room_id):
     """ Route for room """
     return render_template('save-scene.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
+
 
 @app.route('/all-lights')
 def all_lights():

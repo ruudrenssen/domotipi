@@ -27,7 +27,7 @@ class Room:
     media_players = []
     lights = []
 
-    def __init__(self, room_id=0, name='', vendor_id=0, hidden=False, brightness = 125):
+    def __init__(self, room_id=0, name='', vendor_id=0, hidden=False, brightness=125):
         self.room_id = room_id
         self.room_name = name
         self.vendor_id = vendor_id

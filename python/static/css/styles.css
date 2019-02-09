@@ -33,6 +33,7 @@ html, body {
     font-weight: 300;
     line-height: 1.25;
     background: var(--color-background);
+    background: linear-gradient(to bottom right, #e2ffc1 0%,#fff5b5 52%,#ffd8e5 100%);
     color: var(--color-foreground);
 }
 main {
