@@ -58,10 +58,18 @@ class KodiRemote():
         self.kodi.Input.Select()
 
     def volume_up(self):
-        pass
+        volume = self.kodi.Application.GetProperties({'properties': ['volume']})['result']['volume']
+        volume += 5
+        if volume > 100:
+            volume = 100
+        self.kodi.Application.SetVolume({'volume': volume})
 
     def volume_down(self):
-        pass
+        volume = self.kodi.Application.GetProperties({'properties': ['volume']})['result']['volume']
+        volume -= 5
+        if volume < 0:
+            volume = 0
+        self.kodi.Application.SetVolume({'volume': volume})
 
     def playpause(self):
         self.kodi.Player.PlayPause([PLAYER_VIDEO])
