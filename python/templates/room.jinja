@@ -8,7 +8,7 @@
             <h1 class="visually-hidden">Media controls</h1>
             <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote" class="dark-box media-remote">
                 <div class="media-remote__search">
-                    <label class="search">Search</label>
+                    <label class="search">Search:</label>
                     <input type="text" placeholder="Pulp Fiction, Sopranos, Alt-J" class="search__input">
                     <input type="submit" value="🔍" class="search__button">
                 </div>
@@ -28,7 +28,7 @@
                     <button name="kodi_action" value="volume_down" class="volume-control">-</button>
                 </div>
                 <div class="media-remote__info">
-                    <h2>Currently playing</h2>
+                    <h2>Currently playing:</h2>
                     <div>{{ media.current_item }}</div>
                 </div>
             </form>
@@ -44,7 +44,7 @@
     <section class="bottom-controls box">
 
         {% block bottom_controls %}
-            <h2>Scenes</h2>
+            <h2>Scenes:</h2>
         {% endblock %}
 
     </section>
