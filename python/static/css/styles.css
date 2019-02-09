@@ -37,7 +37,7 @@ main {
     padding: var(--gutter);
 }
 
-h1, h2, h3, label {
+h1, h2, h3, label, a {
     font-size: 0.625rem;
     text-transform: uppercase;
     color: var(--color-foreground);
@@ -169,6 +169,7 @@ input {
 
 .tab.is-active a {
     color: var(--color-background);
+    opacity: 1;
 }
 
 .tab a {
