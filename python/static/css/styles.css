@@ -4,6 +4,7 @@
     --tiny-gutter: 0.33rem;
 
     --color-foreground: #212121;
+    --color-trans-foreground: rgba(33, 33, 33, 0.2);
     --color-background: #EFEFEF;
     --color-muted: #565656;
 
@@ -29,12 +30,14 @@ html, body {
     height: 100vh;
 
     font-family: var(--font-family);
+    font-weight: 300;
     line-height: 1.25;
     background: var(--color-background);
     color: var(--color-foreground);
 }
 main {
-    padding: var(--gutter);
+    padding: var(--tiny-gutter) var(--gutter) var(--gutter) var(--gutter);
+    font-size: 0.875rem;
 }
 
 h1, h2, h3, label, a {
@@ -42,21 +45,31 @@ h1, h2, h3, label, a {
     text-transform: uppercase;
     color: var(--color-foreground);
     opacity: 0.5;
-    font-weight: 800;
+    font-weight: 700;
     margin: 0 0 var(--tiny-gutter) 0;
 }
 
 button, input {
     padding: 0;
     font: var(--font);
+    font-size: 0.875rem;
+    font-weight: 300;
     color: var(--color-foreground);
     background: transparent;
     border: none;
     outline: none;
 }
 
-button:hover {
-    border: var(--border);
+button{
+    padding: var(--small-gutter) 0;
+
+    opacity: 0.5;
+}
+
+button:active {
+    opacity: 1;
+
+    box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.25);
 }
 
 input {
@@ -65,7 +78,7 @@ input {
 }
 
 .box {
-    padding: var(--gutter);
+    padding: var(--gutter) 0 0 0;
 }
 
 .dark-box {
@@ -95,7 +108,7 @@ input {
 
 .media-remote {
     display: grid;
-    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-rows: repeat(3, min-content);
     grid-template-columns: 6fr 2fr;
 }
 
@@ -112,10 +125,6 @@ input {
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
     margin: var(--gutter) 0;
-}
-
-.media-remote__controls button{
-    padding: var(--small-gutter) 0;
 }
 
 .media-remote__volume {
@@ -135,7 +144,47 @@ input {
 .remote {
     display: grid;
     grid-template-rows: repeat(3, auto);
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
+}
+
+.scenes {
+    flex: 1;
+    display: flex;
+    max-width: 100%;
+    overflow: auto;
+    justify-content: start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--tiny-gutter);
+
+    margin-right: var(--tiny-gutter);
+}
+
+.scene.is-active {
+    font-weight: 800;
+}
+
+.scene:last-child {
+    margin-right: 0;
+}
+
+.scene::before {
+    content: '';
+    display: block;
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--tiny-gutter);
+    border-radius: 50%;
+    border: var(--border);
 }
 
 .search {

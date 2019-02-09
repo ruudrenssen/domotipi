@@ -8,7 +8,7 @@
             <h1 class="visually-hidden">Media controls</h1>
             <form action="/kodi" method="POST" name="kodi-remote" id="kodi-remote" class="dark-box media-remote">
                 <div class="media-remote__search">
-                    <label class="search">Search</label>
+                    <label class="search">Search:</label>
                     <input type="text" placeholder="Pulp Fiction, Sopranos, Alt-J" class="search__input">
                     <button class="search__button">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 -3 20 20" xml:space="preserve" class="icon icon--small">
@@ -89,7 +89,7 @@
                     </button>
                 </div>
                 <div class="media-remote__info">
-                    <h2>Currently playing</h2>
+                    <h2>Currently playing:</h2>
                     <div>{{ media.current_item }}</div>
                 </div>
             </form>
@@ -98,14 +98,47 @@
     </section>
 
     <ol class="tabs">
-        <li class="tab is-active"><a href="#">Media player</a></li>
+        <li class="tab is-active"><a href="#">Media</a></li>
         <li class="tab"><a href="#">Lights</a></li>
     </ol>
 
-    <section class="bottom-controls box">
+    <section class="bottom-controls">
 
         {% block bottom_controls %}
-            <h2>Scenes</h2>
+            <div class="box">
+                <h2 class="text-center">Scenes</h2>
+                
+                <ul class="scenes">
+                    <li class="scene">
+                        <div class="scene-preview"></div>
+                        <div class="scene-title">Daylight</div>
+                    </li>
+                    <li class="scene is-active">
+                        <div class="scene-preview"></div>
+                        <div class="scene-title">Dimmed</div>
+                    </li>
+                    <li class="scene">
+                        <div class="scene-preview"></div>
+                        <div class="scene-title">Movie</div>
+                    </li>
+                    <li class="scene">
+                        <div class="scene-preview"></div>
+                        <div class="scene-title">Night</div>
+                    </li>
+                    <li class="scene">
+                        <div class="scene-preview"></div>
+                        <div class="scene-title">Colorloop</div>
+                    </li>
+                    <li class="scene">
+                        <div class="scene-preview"></div>
+                        <div class="scene-title">Colorloop</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box">
+                <h2 class="text-center">Alarms</h2>
+            </div>
         {% endblock %}
 
     </section>

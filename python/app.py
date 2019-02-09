@@ -21,6 +21,10 @@ rooms.sync_rooms(db, hue.rooms)
 # setup scenes
 scenes.initialize_scenes(rooms.get_rooms())
 
+# scenes.get_scenes()[0][2].activate_scene(hue.bridge)
+# scenes.get_scenes()[0][1].activate_scene(hue.bridge)
+
+
 @app.route('/')
 def index():
     """ Default route """

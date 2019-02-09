@@ -22,7 +22,7 @@ class KodiRemote():
     def update(self):
         playing = self.kodi.Player.GetItem([PLAYER_VIDEO])['result']['item']['label']
         if playing == '':
-            playing = 'nothing is playing'
+            playing = 'nothing playing'
         self.properties['current_item'] = playing
 
     def check_connection(self, ip):
