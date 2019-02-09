@@ -78,6 +78,16 @@ input {
     padding: var(--gutter);
 }
 
+.icon {
+    height: 2rem;
+
+    fill: currentColor;
+}
+
+.icon--small {
+    height: 1.25rem;
+}
+
 .info-button {
     position: absolute;
     right: 0;
