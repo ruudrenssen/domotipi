@@ -76,7 +76,7 @@
                 </div>
                 <div class="media-remote__volume">
                     <button name="kodi_action" value="volume_up" class="volume-control">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 3 20 20" class="icon">
                             <title>plus</title>
                             <polygon points="15 9 11 9 11 5 9 5 9 9 5 9 5 11 9 11 9 15 11 15 11 11 15 11 15 9"/>
                         </svg>
@@ -98,46 +98,49 @@
     </section>
 
     <ol class="tabs">
-        <li class="tab is-active"><a href="#">Media</a></li>
-        <li class="tab"><a href="#">Lights</a></li>
+        <li class="tab {% if current == 'media' %}is-active{% endif %}"><a href="/room/{{ room[0][0] }}">Media</a></li>
+        <li class="tab {% if current == 'lights' %}is-active{% endif %}"><a href="/room/{{ room[0][0] }}/lights">Lights</a></li>
     </ol>
 
     <section class="bottom-controls">
 
         {% block bottom_controls %}
+
             <div class="box">
-                <h2 class="text-center">Scenes</h2>
-                
-                <ul class="scenes">
-                    <li class="scene">
-                        <div class="scene-preview"></div>
-                        <div class="scene-title">Daylight</div>
-                    </li>
-                    <li class="scene is-active">
-                        <div class="scene-preview"></div>
-                        <div class="scene-title">Dimmed</div>
-                    </li>
-                    <li class="scene">
-                        <div class="scene-preview"></div>
-                        <div class="scene-title">Movie</div>
-                    </li>
-                    <li class="scene">
-                        <div class="scene-preview"></div>
-                        <div class="scene-title">Night</div>
-                    </li>
-                    <li class="scene">
-                        <div class="scene-preview"></div>
-                        <div class="scene-title">Colorloop</div>
-                    </li>
-                    <li class="scene">
-                        <div class="scene-preview"></div>
-                        <div class="scene-title">Colorloop</div>
-                    </li>
-                </ul>
+                <div class="alarms">
+                    <h2 class="text-center">Alarms</h2>
+                    <div class="alarm">
+                        <div>Weekdays</div>
+                        <div>07:00</div>
+                        <div class="day is-active">Mo</div>
+                        <div class="day is-active">Tu</div>
+                        <div class="day is-active">We</div>
+                        <div class="day is-active">Th</div>
+                        <div class="day is-active">Fr</div>
+                        <div class="day">Sa</div>
+                        <div class="day">Su</div>
+                    </div>
+                    <div class="alarm">
+                        <div>Weekend</div>
+                        <div>10:00</div>
+                        <div class="day">Mo</div>
+                        <div class="day">Tu</div>
+                        <div class="day">We</div>
+                        <div class="day">Th</div>
+                        <div class="day">Fr</div>
+                        <div class="day is-active">Sa</div>
+                        <div class="day is-active">Su</div>
+                    </div>
+                </div>
             </div>
 
             <div class="box">
-                <h2 class="text-center">Alarms</h2>
+                <h2 class="text-center">Scenes</h2>
+
+                {% include 'controls/scenes.jinja' %}
+
+                {% include 'controls/scene.jinja' %}
+
             </div>
         {% endblock %}
 

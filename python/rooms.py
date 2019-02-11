@@ -22,6 +22,7 @@ class Room:
     vendor_id = 0
     hidden = False
     brightness = 125
+    on = False
 
     # Available devices
     media_players = []
@@ -39,9 +40,16 @@ class Room:
         database.remove_all_lights_from_room(self.room_id)
         self.lights = []
         # Add lights to rooms_lights table and lights object
+        brightness = 0
         for light in lights:
             database.add_light_to_room(light.light_id, self.room_id)
+            brightness += light.brightness
+            if light.on:
+                self.on = True
             self.lights.append(light)
+
+        self.brightness = brightness / len(lights)
+        print(self.brightness)
 
     def get_lights(self):
         return self.lights

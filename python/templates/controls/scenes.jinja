@@ -1,0 +1,8 @@
+<ul class="scenes">
+{% for scene in scenes %}
+    <li class="scene">
+        <div class="scene-preview"></div>
+        <div class="scene-title">{{ scene['name'] }}</div>
+    </li>
+{% endfor %}
+</ul>

@@ -22,7 +22,7 @@ rooms.sync_rooms(db, hue.rooms)
 scenes.initialize_scenes(rooms.get_rooms())
 
 # scenes.get_scenes()[0][2].activate_scene(hue.bridge)
-# scenes.get_scenes()[0][1].activate_scene(hue.bridge)
+# scenes.get_scenes()[1][1].activate_scene(hue.bridge)
 
 
 @app.route('/')
@@ -36,25 +36,40 @@ def index():
 def room(room_id):
     """ Route for room """
     kodi.update()
-    return render_template('room.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id), media=kodi.properties)
+    room_scenes = scenes.get_scenes_for_room(int(room_id))
+    return render_template('room.jinja',
+                           current='media',
+                           room=db.get_room(room_id),
+                           lights=db.all_lights_from_room(room_id),
+                           media=kodi.properties,
+                           scenes=room_scenes)
 
 
 @app.route('/room/<room_id>/lights')
 def lights(room_id):
     """ Route for room """
-    return render_template('lights.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
+    room_scenes = scenes.get_scenes_for_room(int(room_id))
+    return render_template('lights.jinja',
+                           current='lights',
+                           room=db.get_room(room_id),
+                           lights=db.all_lights_from_room(room_id),
+                           scenes=room_scenes)
 
 
-@app.route('/room/<room_id>/save-as-scene')
+@app.route('/room/<room_id>/save-as-scene.jinja')
 def save_scene(room_id):
     """ Route for room """
-    return render_template('save-scene.jinja', room=db.get_room(room_id), lights=db.all_lights_from_room(room_id))
+    return render_template('save-scene.jinja.jinja',
+                           current='save-scene',
+                           room=db.get_room(room_id),
+                           lights=db.all_lights_from_room(room_id))
 
 
 @app.route('/all-lights')
 def all_lights():
     """ All lights setup """
-    return render_template('lights.jinja', lights=hue.lights)
+    return render_template('lights.jinja',
+                           lights=hue.lights)
 
 
 @app.route('/hue', methods=['POST', 'GET'])
@@ -76,4 +91,4 @@ def kodi_action():
 
 """ Run the app """
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
