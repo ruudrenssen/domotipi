@@ -1,18 +1,24 @@
 class Lights:
     lights = []
+    database = {}
 
-    def sync_lights(self, database, lights):
+    def __init__(self, database):
+        self.database = database
+
+    def sync_lights(self, lights):
         """ Sync vendor information with database """
-        database.reset_lights_table()
-        database.add_lights(lights)
-        for result in database.get_lights():
+        self.database.reset_lights_table()
+        self.database.add_lights(lights)
+        for result in self.database.get_lights():
             # create new Light instance and pass the phue light object as parameter
-            light = Light(lights[result[3]], result)
+            light = Light(self.database, lights[result[3]], result)
             self.lights.append(light)
 
 
 class Light:
-    def __init__(self, phue_light, db_row):
+    database = {}
+
+    def __init__(self, database, phue_light, db_row):
         self.light_id = db_row[0]
         self.light_type = db_row[1]
         self.light_name = db_row[2]
@@ -27,8 +33,9 @@ class Light:
         self.x_value = db_row[11]
         self.y_value = db_row[12]
         self.phue = phue_light
+        self.database = database
 
-
+    @staticmethod
     def toggle_on(light):
         light.on_state = not light.on_state
         light.phue.on = light.on_state

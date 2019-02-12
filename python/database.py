@@ -89,7 +89,13 @@ class Database(object):
             vendor_id = room.group_id
             name = room.name
             brightness = room.brightness
-            sql = """INSERT INTO rooms (name, vendor_id, hidden, brightness) VALUES ('%s', '%s', '%s', '%s')""" % (name, vendor_id, 0, brightness)
+            on_state = int(room.on)
+            print(on_state)
+
+            sql = """
+                INSERT INTO rooms (
+                `name`, `vendor_id`, `hidden`, `brightness`, `on`)
+                VALUES ('%s', '%s', '%s', '%s', '%s')""" % (name, vendor_id, 0, brightness, on_state)
             cursor.execute(sql)
         self.connection.commit()
         self.connection.close()
@@ -103,6 +109,9 @@ class Database(object):
         self.connection.commit()
         self.connection.close()
         return room
+
+    def set_room(self, room):
+        print(room)
 
     def reset_rooms_table(self):
         self.connection.connect()
@@ -248,6 +257,7 @@ class Database(object):
             `vendor_id` INT NOT NULL ,  
             `hidden` BOOLEAN NOT NULL , 
             `brightness` TINYINT(3) UNSIGNED NOT NULL ,
+            `on` TINYINT(1) NOT NULL ,
             PRIMARY KEY (`id`)) 
             ENGINE = InnoDB;"""
         cursor.execute(sql)

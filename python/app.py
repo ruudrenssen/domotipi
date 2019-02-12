@@ -10,13 +10,13 @@ app = Flask(__name__)
 hue = Hue()
 kodi = KodiRemote()
 db = Database()
-rooms = Rooms()
-lights = Lights()
+rooms = Rooms(db)
+lights = Lights(db)
 scenes = Scenes()
 
 # Prepare database: populate tables
-lights.sync_lights(db, hue.lights)
-rooms.sync_rooms(db, hue.rooms)
+lights.sync_lights(hue.lights)
+rooms.sync_rooms(hue.rooms)
 
 # setup scenes
 scenes.initialize_scenes(rooms.get_rooms())
@@ -80,6 +80,19 @@ def hue_light_info():
     return redirect("/", code=302)
 
 
+@app.route('/room/<room_id>/set-room', methods=['POST', 'GET'])
+def set_scene(room_id):
+    form = request.form
+    current_room = rooms.get_rooms()[int(room_id)-1]
+    if form['scene_on'] == 'True':
+        current_room.lights_on(hue.bridge)
+    else:
+        current_room.lights_fade_out(hue.bridge, 10)
+    url = request.referrer
+    return redirect(url, code=302)
+    """ Set scene in room """
+
+
 @app.route('/kodi', methods=['POST', 'GET'])
 def kodi_action():
     """ Handle Kodi media player commands """
@@ -91,5 +104,5 @@ def kodi_action():
 
 """ Run the app """
 if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0')
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
+    # app.run(debug=True)
