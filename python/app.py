@@ -85,7 +85,7 @@ def set_scene(room_id):
     form = request.form
     current_room = rooms.get_rooms()[int(room_id)-1]
     if form['scene_on'] == 'True':
-        current_room.lights_on(hue.bridge)
+        current_room.lights_on(hue.bridge, int(form['brightness']))
     else:
         current_room.lights_fade_out(hue.bridge, 10)
     url = request.referrer

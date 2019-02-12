@@ -62,15 +62,16 @@ class Room:
     def get_lights(self):
         return self.lights
 
-    def lights_on(self, bridge):
+    def lights_on(self, bridge, brightness):
+        self.brightness = brightness
         self.on = True
         lights = []
         for light in self.lights:
             lights.append(light.light_id)
-        command = {'on': True, 'bri': self.brightness}
+        command = {'on': True, 'bri': brightness}
         bridge.set_light(lights, command)
 
-        sql = """UPDATE `rooms` SET `on` = 1 WHERE id = '%s' """ % self.room_id
+        sql = """UPDATE `rooms` SET `on` = 1, `brightness` = '%s' WHERE id = '%s' """ % (self.brightness, self.room_id)
         self.database.connection.connect()
         cursor = self.database.connection.cursor()
         cursor.execute(sql)

@@ -7,6 +7,6 @@
         <input type="radio" {% if not room[0][5] %}checked{% endif %} value="False" name="scene_on" />
         off
     </label>
-    <input name="brightness" type="range" min="1" max="254" value="{{ room[0][4] }}" {% if not room[0][5] %}disabled{% endif %} />
+    <input name="brightness" type="range" min="1" max="254" value="{{ room[0][4] }}" />
     <input type="submit" />
 </form>
