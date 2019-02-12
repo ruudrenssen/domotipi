@@ -70,6 +70,13 @@ class Room:
         command = {'on': True, 'bri': self.brightness}
         bridge.set_light(lights, command)
 
+        sql = """UPDATE `rooms` SET `on` = 1 WHERE id = '%s' """ % self.room_id
+        self.database.connection.connect()
+        cursor = self.database.connection.cursor()
+        cursor.execute(sql)
+        self.database.connection.commit()
+        self.database.connection.close()
+
     def lights_fade(self, bridge, brightness, time):
         if brightness > 0:
             self.brightness = brightness
@@ -81,6 +88,13 @@ class Room:
         threading.Timer(time / 100, self.lights_off, [bridge]).start()
 
     def lights_fade_out(self, bridge, time):
+        sql = """UPDATE `rooms` SET `on` = 0, `brightness` = '%s' WHERE id = '%s' """ % (self.brightness, self.room_id)
+        self.database.connection.connect()
+        cursor = self.database.connection.cursor()
+        cursor.execute(sql)
+        self.database.connection.commit()
+        self.database.connection.close()
+
         self.lights_fade(bridge, 0, time)
         threading.Timer(time/100, self.lights_off, [bridge]).start()
 
@@ -91,3 +105,6 @@ class Room:
         for light in self.lights:
             lights.append(light.light_id)
         bridge.set_light(lights, command)
+
+
+
