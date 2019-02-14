@@ -160,17 +160,25 @@ class Database(object):
         self.connection.connect()
         cursor = self.connection.cursor()
         for scene in scenes:
-            # execute sql based on type
+            sql = ''
             name = scene[1]['name']
             scene_type = scene[1]['type']
-            room_id = scene[1]['group']
-            sql = """
-                    INSERT INTO scenes (
-                    `name`, `type`, `room_id`)
-                    VALUES ('%s', '%s', '%s')""" % (name, scene_type, room_id)
+            lights = ','.join(scene[1]['lights'])
+            if scene_type == 'GroupScene':
+                room_id = scene[1]['group']
+                sql = """
+                        INSERT INTO scenes (
+                        `name`, `type`, `lights`, `room_id`)
+                        VALUES ('%s', '%s', '%s', '%s')""" % (name, scene_type, lights, room_id)
+            if scene_type == 'LightScene':
+                sql = """
+                        INSERT INTO scenes (
+                        `name`, `type`, `lights`)
+                        VALUES ('%s', '%s', '%s')""" % (name, scene_type, lights)
             cursor.execute(sql)
-        self.connection.commit()
+            self.connection.commit()
         self.connection.close()
+
 
     def get_scenes(self):
         # Return all lights
@@ -343,8 +351,9 @@ class Database(object):
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`scenes` (
             `id` INT(3) NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(64) NOT NULL,
-            `type` VARCHAR(32) NOT NULL, 
-            `room_id` INT(3) NOT NULL, 
+            `type` VARCHAR(32) NOT NULL,
+            `lights` VARCHAR(254) NOT NULL, 
+            `room_id` INT(3), 
             PRIMARY KEY (`id`))
             ENGINE = InnoDB;"""
         cursor.execute(sql)
