@@ -3,39 +3,55 @@ import random
 
 class Scenes:
     scenes = []
+    database = {}
+
+    def __init__(self, database):
+        self.database = database
+
+    def sync_scenes(self, bridge):
+        scenes = bridge.get_scene().items()
+        # print(bridge.__dir__())
+        # print(scenes.__dir__())
+        # print(bridge.get_scene().items().__dir__())
+        # for scene in scenes:
+        #     scene = {
+        #         'name': scene[1]['name'],
+        #         'type': scene[1]['type'],
+        #         'room': scene[1]['group']
+        #     }
+        self.database.reset_scenes_table()
+        self.database.add_scenes(scenes)
+
+        for result in self.database.get_scenes():
+            # Create new room object for each room, add lights based on vendor_id and add the room to the rooms object
+            scene = Scene(result[0], result[1], result[2], result[3])
+            self.scenes.append(scene)
 
     def initialize_scenes(self, rooms):
         for room in rooms:
-            scenes = []
-            room_id = room.room_id
-            lights = []
-            for light in room.get_lights():
-                lights.append(light)
-
-            scene = DaylightScene(room_id, lights)
-            scenes.append(scene)
-
-            scene = Dimmed(room_id, lights)
-            scenes.append(scene)
-
-            scene = LivingScene(room_id, lights)
-            scenes.append(scene)
-
-            self.scenes.insert(room_id, scenes)
+            print(room)
+            pass
 
     def get_scenes_for_room(self, room_id):
-        return self.scenes[room_id-1]
+        self.database.connection.connect()
+        cursor = self.database.connection.cursor()
+        sql = """SELECT * FROM scenes WHERE room_id = %s""" % room_id
+        cursor.execute(sql)
+        scenes = cursor.fetchall()
+        self.database.connection.close()
+        return scenes
 
 
 class Scene:
     scene_id = ''
     name = ''
+    scene_type = ''
     room_id = ''
-    lights = []
 
-    def __init__(self, room_id, lights):
+    def __init__(self, scene_id, name, scene_type, room_id):
+        self.name = name
+        self.scene_type = scene_type
         self.room_id = room_id
-        self.lights = lights
 
     def activate_scene(self):
         pass

@@ -11,11 +11,10 @@ class KodiRemote():
         config = configparser.ConfigParser()
         config.read('config.ini')
         ip = config['KODI']['IP_ADDRESS']
-        self.kodi = self.check_connection(ip)
-        if self.kodi:
-            print('connected to kodi')
-        else:
-            print('could not connect to kodi')
+        try:
+            self.kodi = self.check_connection(ip)
+        except ConnectionError as err:
+            print(err)
 
         self.update()
 

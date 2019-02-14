@@ -12,11 +12,12 @@ kodi = KodiRemote()
 db = Database()
 rooms = Rooms(db)
 lights = Lights(db)
-scenes = Scenes()
+scenes = Scenes(db)
 
 # Prepare database: populate tables
 lights.sync_lights(hue.lights)
 rooms.sync_rooms(hue.rooms)
+scenes.sync_scenes(hue.bridge)
 
 # setup scenes
 scenes.initialize_scenes(rooms.get_rooms())
@@ -36,7 +37,7 @@ def index():
 def room(room_id):
     """ Route for room """
     kodi.update()
-    room_scenes = scenes.get_scenes_for_room(int(room_id))
+    room_scenes = scenes.get_scenes_for_room(room_id)
     return render_template('room.jinja',
                            current='media',
                            room=db.get_room(room_id),

@@ -4,6 +4,10 @@ from phue import Bridge
 
 
 class Hue:
+    rooms = {}
+    lights = {}
+    scenes = {}
+
     def __init__(self):
         config = configparser.ConfigParser()
         config.read('config.ini')
@@ -11,19 +15,19 @@ class Hue:
         user = config['HUE']['USER']
         self.bridge = Bridge(ip, user)
 
-        if self.connect_to_hue(self.bridge):
-            self.rooms = self.bridge.groups
-            self.lights = self.bridge.lights
-
-    @staticmethod
-    def connect_to_hue(bridge):
         try:
-            bridge.connect()
-            print('connected to hue bridge')
-            return True
-        except Exception as exception:
-            print(exception)
-            return False
+            self.bridge.connect()
+        except ConnectionError as err:
+            print(err)
+
+        self.rooms = self.bridge.groups
+        self.lights = self.bridge.lights
+        self.scenes = self.bridge.get_scene()
+
+        # print(self.scenes.__dir__())
+        # for key in self.scenes.keys():
+        #     print(key)
+
 
     def transition_to_bright(self, light, seconds):
         self.bridge.set_light(light.name, 'bri', 254, transitiontime=(seconds * 10))

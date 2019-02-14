@@ -90,7 +90,6 @@ class Database(object):
             name = room.name
             brightness = room.brightness
             on_state = int(room.on)
-            print(on_state)
 
             sql = """
                 INSERT INTO rooms (
@@ -150,6 +149,37 @@ class Database(object):
         cursor = self.connection.cursor()
         cursor.execute("TRUNCATE TABLE lights")
         self.connection.close()
+
+    def reset_scenes_table(self):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        cursor.execute("TRUNCATE TABLE scenes")
+        self.connection.close()
+
+    def add_scenes(self, scenes):
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        for scene in scenes:
+            # execute sql based on type
+            name = scene[1]['name']
+            scene_type = scene[1]['type']
+            room_id = scene[1]['group']
+            sql = """
+                    INSERT INTO scenes (
+                    `name`, `type`, `room_id`)
+                    VALUES ('%s', '%s', '%s')""" % (name, scene_type, room_id)
+            cursor.execute(sql)
+        self.connection.commit()
+        self.connection.close()
+
+    def get_scenes(self):
+        # Return all lights
+        self.connection.connect()
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM scenes")
+        scenes = cursor.fetchall()
+        self.connection.close()
+        return scenes
 
     @staticmethod
     def add_dimmable_color_light(light, cursor):
@@ -250,7 +280,7 @@ class Database(object):
             ENGINE = InnoDB;"""
         cursor.execute(sql)
 
-        # Create scenes table if it doesn't already exist
+        # Create room table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`rooms` (
             `id` INT(3) NOT NULL AUTO_INCREMENT , 
             `name` VARCHAR(32) NOT NULL , 
@@ -281,7 +311,7 @@ class Database(object):
             ENGINE = InnoDB;"""
         cursor.execute(sql)
 
-        # Create scenes table if it doesn't already exist
+        # Create media player table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`players` (
             `id` INT(3) NOT NULL AUTO_INCREMENT , 
             `name` VARCHAR(32) NOT NULL , 
@@ -293,15 +323,15 @@ class Database(object):
             ENGINE = InnoDB;"""
         cursor.execute(sql)
 
-        # Create rooms table if it doesn't already exist
+        # Create room-light table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_lights` (
-            `room_id` INT(3) NOT NULL  , 
-            `light_id` INT NOT NULL ,
+            `room_id` INT(3) NOT NULL, 
+            `light_id` INT NOT NULL,
             PRIMARY KEY (`room_id`, `light_id`))
             ENGINE = InnoDB;"""
         cursor.execute(sql)
 
-        # Create rooms table if it doesn't already exist
+        # Create room-player table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`rooms_players` (
             `room_id` INT(3) NOT NULL  , 
             `player_id` INT NOT NULL ,
@@ -311,10 +341,10 @@ class Database(object):
 
         # Create scenes table if it doesn't already exist
         sql = """CREATE TABLE IF NOT EXISTS `domotipi`.`scenes` (
-            `id` INT(3) NOT NULL AUTO_INCREMENT ,
-            `name` VARCHAR(32) NOT NULL ,
-            `room_id` INT(3) NOT NULL , 
-            `table_name` INT(3) NOT NULL ,
+            `id` INT(3) NOT NULL AUTO_INCREMENT,
+            `name` VARCHAR(64) NOT NULL,
+            `type` VARCHAR(32) NOT NULL, 
+            `room_id` INT(3) NOT NULL, 
             PRIMARY KEY (`id`))
             ENGINE = InnoDB;"""
         cursor.execute(sql)
