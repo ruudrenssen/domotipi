@@ -32,7 +32,9 @@ class Scenes:
     def activate_scene(bridge, scene_proporties):
         scene_id = scene_proporties['scene_id']
         room_id = scene_proporties['room_id']
-        print(bridge.activate_scene(room_id, scene_id))
+        if next(iter(bridge.activate_scene(room_id, scene_id)[0].keys())) == 'error':
+            # todo: handle error
+            pass
 
 
 class Scene:

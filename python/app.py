@@ -95,7 +95,7 @@ def activate_scene(room_id):
     form = request.form
     scene_properties = {
         'scene_id': form['scene-id'],
-        'room_id': int(room_id) - 1
+        'room_id': int(room_id)
     }
     scenes.activate_scene(hue.bridge, scene_properties)
 
