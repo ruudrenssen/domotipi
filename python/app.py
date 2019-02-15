@@ -19,12 +19,6 @@ lights.sync_lights(hue.lights)
 rooms.sync_rooms(hue.rooms)
 scenes.sync_scenes(hue.bridge)
 
-# setup scenes
-scenes.initialize_scenes(rooms.get_rooms())
-
-# scenes.get_scenes()[0][2].activate_scene(hue.bridge)
-# scenes.get_scenes()[1][1].activate_scene(hue.bridge)
-
 
 @app.route('/')
 def index():
@@ -82,13 +76,29 @@ def hue_light_info():
 
 
 @app.route('/room/<room_id>/set-room', methods=['POST', 'GET'])
-def set_scene(room_id):
+def set_room(room_id):
+    """ Set brightness and on/off"""
     form = request.form
     current_room = rooms.get_rooms()[int(room_id)-1]
     if form['scene_on'] == 'True':
         current_room.lights_on(hue.bridge, int(form['brightness']))
     else:
         current_room.lights_fade_out(hue.bridge, 10)
+    url = request.referrer
+    return redirect(url, code=302)
+
+
+@app.route('/room/<room_id>/activate-scene', methods=['POST', 'GET'])
+def activate_scene(room_id):
+    """ Activate scene"""
+    # print(rooms.get_rooms()[int(room_id)-1].room_name)
+    form = request.form
+    scene_properties = {
+        'scene_id': form['scene-id'],
+        'room_id': int(room_id) - 1
+    }
+    scenes.activate_scene(hue.bridge, scene_properties)
+
     url = request.referrer
     return redirect(url, code=302)
     """ Set scene in room """

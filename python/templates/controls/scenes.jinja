@@ -1,8 +1,10 @@
-<ul class="scenes">
-{% for scene in scenes %}
-    <li class="scene">
-        <div class="scene-preview"></div>
-        <div class="scene-title">{{ scene[1] }}</div>
-    </li>
-{% endfor %}
-</ul>
+<form id="scenes-remote" method="POST" name="room-remote" action="/room/{{ room[0][0] }}/activate-scene" class="scene-control">
+    <ul class="scenes">
+    {% for scene in scenes %}
+        <li class="scene">
+            <button type="submit" name="scene-id" value="{{ scene[5] }}" class="scene-preview"></button>
+            <div class="scene-title">{{ scene[1] }}</div>
+        </li>
+    {% endfor %}
+    </ul>
+</form>

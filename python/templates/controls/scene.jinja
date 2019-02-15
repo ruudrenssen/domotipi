@@ -1,4 +1,4 @@
-<form id="room-remote" method="POST" name="room-remote" action="/room/{{ room[0][0] }}/set-room" class="scene-control">
+<form id="scene-remote" method="POST" name="room-remote" action="/room/{{ room[0][0] }}/set-room" class="scene-control">
     <label class="text-center">
         <input type="radio" {% if room[0][5] %}checked{% endif %} value="True" name="scene_on" />
         on

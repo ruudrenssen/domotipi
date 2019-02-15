@@ -1,6 +1,7 @@
 import threading
 import random
 
+
 class Scenes:
     scenes = []
     database = {}
@@ -10,27 +11,13 @@ class Scenes:
 
     def sync_scenes(self, bridge):
         scenes = bridge.get_scene().items()
-        # print(bridge.__dir__())
-        # print(scenes.__dir__())
-        # print(bridge.get_scene().items().__dir__())
-        # for scene in scenes:
-        #     scene = {
-        #         'name': scene[1]['name'],
-        #         'type': scene[1]['type'],
-        #         'room': scene[1]['group']
-        #     }
         self.database.reset_scenes_table()
         self.database.add_scenes(scenes)
 
         for result in self.database.get_scenes():
-            # Create new room object for each room, add lights based on vendor_id and add the room to the rooms object
-            scene = Scene(result[0], result[1], result[2], result[3])
+            # Create new scene object for each room, add lights based on vendor_id and add the scene to the rooms object
+            scene = Scene(result[0], result[1], result[2], result[3], result[4])
             self.scenes.append(scene)
-
-    def initialize_scenes(self, rooms):
-        for room in rooms:
-            print(room)
-            pass
 
     def get_scenes_for_room(self, room_id):
         self.database.connection.connect()
@@ -41,17 +28,26 @@ class Scenes:
         self.database.connection.close()
         return scenes
 
+    @staticmethod
+    def activate_scene(bridge, scene_proporties):
+        scene_id = scene_proporties['scene_id']
+        room_id = scene_proporties['room_id']
+        print(bridge.activate_scene(room_id, scene_id))
+
 
 class Scene:
-    scene_id = ''
     name = ''
     scene_type = ''
+    lights = ''
     room_id = ''
+    vendor_id = ''
 
-    def __init__(self, scene_id, name, scene_type, room_id):
+    def __init__(self, name, scene_type, lights, room_id, vendor_id):
         self.name = name
         self.scene_type = scene_type
         self.room_id = room_id
+        self.lights = lights.split()
+        self.vendor_id = vendor_id
 
     def activate_scene(self):
         pass

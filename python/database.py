@@ -109,9 +109,6 @@ class Database(object):
         self.connection.close()
         return room
 
-    def set_room(self, room):
-        print(room)
-
     def reset_rooms_table(self):
         self.connection.connect()
         cursor = self.connection.cursor()
@@ -162,23 +159,23 @@ class Database(object):
         for scene in scenes:
             sql = ''
             name = scene[1]['name']
+            vendor_id = scene[0]
             scene_type = scene[1]['type']
-            lights = ','.join(scene[1]['lights'])
+            lights = ' '.join(scene[1]['lights'])
             if scene_type == 'GroupScene':
                 room_id = scene[1]['group']
                 sql = """
                         INSERT INTO scenes (
-                        `name`, `type`, `lights`, `room_id`)
-                        VALUES ('%s', '%s', '%s', '%s')""" % (name, scene_type, lights, room_id)
+                        `name`, `type`, `lights`, `room_id`, `vendor_id`)
+                        VALUES ('%s', '%s', '%s', '%s', '%s')""" % (name, scene_type, lights, room_id, vendor_id)
             if scene_type == 'LightScene':
                 sql = """
                         INSERT INTO scenes (
-                        `name`, `type`, `lights`)
-                        VALUES ('%s', '%s', '%s')""" % (name, scene_type, lights)
+                        `name`, `type`, `lights`, `vendor_id`)
+                        VALUES ('%s', '%s', '%s', '%s')""" % (name, scene_type, lights, vendor_id)
             cursor.execute(sql)
             self.connection.commit()
         self.connection.close()
-
 
     def get_scenes(self):
         # Return all lights
@@ -352,8 +349,9 @@ class Database(object):
             `id` INT(3) NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(64) NOT NULL,
             `type` VARCHAR(32) NOT NULL,
-            `lights` VARCHAR(254) NOT NULL, 
+            `lights` VARCHAR(254) NOT NULL,
             `room_id` INT(3), 
+            `vendor_id` VARCHAR(16) NOT NULL,
             PRIMARY KEY (`id`))
             ENGINE = InnoDB;"""
         cursor.execute(sql)
