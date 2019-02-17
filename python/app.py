@@ -5,6 +5,7 @@ from database import Database
 from rooms import Rooms
 from lights import Lights
 from scenes import Scenes
+from schedules import Schedules
 
 app = Flask(__name__)
 hue = Hue()
@@ -13,12 +14,13 @@ db = Database()
 rooms = Rooms(db)
 lights = Lights(db)
 scenes = Scenes(db)
+schedules = Schedules(db)
 
 # Prepare database: populate tables
 lights.sync_lights(hue.lights)
 rooms.sync_rooms(hue.rooms)
 scenes.sync_scenes(hue.bridge)
-
+schedules.sync_schedules(hue.bridge.get_schedule())
 
 @app.route('/')
 def index():
