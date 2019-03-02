@@ -26,12 +26,12 @@ class Hue:
 
         # print(self.bridge.get_sensor_objects())
         for sensor in self.bridge.get_sensor_objects():
-            # print(sensor.__dir__())
-            print(sensor.__dir__())
+            print(sensor.__dict__)
+            # print('sensor_id: ' + str(sensor.sensor_id))
             # print('name: ' + str(sensor.name))
-            # print('config: ' + str(sensor.config))
+            print('config: ' + str(sensor.config))
             # print('type: ' + str(sensor.type))
-            # print('state: ' + str(sensor.state))
+            print('state: ' + str(sensor.state))
             # print('modelid: ' + str(sensor.modelid))
             # print('recycle: ' + str(sensor.recycle))
             pass
