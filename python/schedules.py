@@ -10,17 +10,29 @@ class Schedules:
     def sync_schedules(schedules):
         # print(schedules.__dir__())
         # print(schedules.values())
-        # print(schedule)
+        print(schedules.items())
 
-        for schedule in schedules.values():
+        for index, schedule in enumerate(schedules.items()):
             # filter starting points schedules
-            # print(schedule)
-            if 'scene' in schedule['command']['body']:
-                print(schedule['command']['address'])
+            print(schedule[1])
+            command = schedule[1]['command']
+            if 'scene' in command['body']:
+                # check for text groups/
+                # take everything from there up to the next slash
+                group = command['address']
+                string_position = int(group.find('groups/')) + 7
+                group = group[string_position:len(group)]
+                string_position = int(group.find('/action'))
+                group = group[:string_position]
+                print(group)
+                # print(schedules.items().__getitem__(index-1))
+
+
+
                 # if schedule['command']['body']['flag']:
                 #     pass
-                    # print('name: ' + schedule['name'] + ', ' + schedule['description'])
-                    # print('starttime: ' + schedule['starttime'])
+                # print('name: ' + schedule['name'] + ', ' + schedule['description'])
+                # print('starttime: ' + schedule['starttime'])
 
 
 
